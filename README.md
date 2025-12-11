@@ -5,7 +5,7 @@ O sistema permite confirmação de presença via código, gerenciamento de convi
 
 ---
 
-## Estrutura do Repositório (Monorepo)
+## Estrutura do Repositório
 
 ```
 casamento-app/
