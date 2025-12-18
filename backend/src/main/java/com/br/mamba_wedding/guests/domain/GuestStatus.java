@@ -1,5 +1,7 @@
 package com.br.mamba_wedding.guests.domain;
 
-public class GuestStatus {
-    
+public enum GuestStatus {
+    PENDENTE,
+    CONFIRMADO,
+    RECUSADO
 }
