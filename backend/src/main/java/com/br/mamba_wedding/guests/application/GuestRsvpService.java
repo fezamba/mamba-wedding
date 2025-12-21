@@ -2,6 +2,7 @@ package com.br.mamba_wedding.guests.application;
 
 import com.br.mamba_wedding.guests.api.dto.RsvpResponse;
 import com.br.mamba_wedding.guests.domain.Guest;
+import com.br.mamba_wedding.guests.domain.GuestNotFoundException;
 import com.br.mamba_wedding.guests.domain.GuestStatus;
 import com.br.mamba_wedding.guests.infrastructure.GuestRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class GuestRsvpService {
     public RsvpResponse lookup(String codigoConvite) {
         String normalizedCode = normalizeCodigoConvite(codigoConvite);
         Guest guest = guestRepository.findByCodigoConvite(normalizedCode)
-                .orElseThrow(() -> new IllegalArgumentException("Código de convite inválido."));
+                .orElseThrow(GuestNotFoundException::new);
 
         return new RsvpResponse(
                 guest.getNomeCompleto(),
@@ -36,7 +37,7 @@ public class GuestRsvpService {
     public void confirm(String codigoConvite, String email, String telefone, String observacoes) {
         String normalizedCode = normalizeCodigoConvite(codigoConvite);
         Guest guest = guestRepository.findByCodigoConvite(normalizedCode)
-                .orElseThrow(() -> new IllegalArgumentException("Código de convite inválido."));
+                .orElseThrow(GuestNotFoundException::new);
 
         guest.setStatusConvite(GuestStatus.CONFIRMADO);
         guest.setRsvpEm(LocalDateTime.now());
@@ -52,7 +53,7 @@ public class GuestRsvpService {
     public void decline(String codigoConvite, String email, String telefone, String observacoes) {
         String normalizedCode = normalizeCodigoConvite(codigoConvite);
         Guest guest = guestRepository.findByCodigoConvite(normalizedCode)
-                .orElseThrow(() -> new IllegalArgumentException("Código de convite inválido."));
+                .orElseThrow(GuestNotFoundException::new);
 
         guest.setStatusConvite(GuestStatus.RECUSADO);
         guest.setRsvpEm(LocalDateTime.now());
