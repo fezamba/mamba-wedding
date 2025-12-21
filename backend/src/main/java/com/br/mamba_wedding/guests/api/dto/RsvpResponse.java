@@ -4,5 +4,8 @@ import com.br.mamba_wedding.guests.domain.GuestStatus;
 public record RsvpResponse(
         String nomeCompleto,
         String codigoConvite,
-        GuestStatus statusConvite
+        GuestStatus statusConvite,
+        String email,
+        String telefone,
+        String observacoes
 ) {}

@@ -23,14 +23,14 @@ public class GuestDataSeeder implements CommandLineRunner {
 
         Guest g1 = Guest.builder()
                 .nomeCompleto("Fabiana Maia")
-                .codigoConvite("Fabi123")
+                .codigoConvite("FABI123")
                 .statusConvite(GuestStatus.PENDENTE)
                 .lado("FAMILIA")
                 .build();
 
         Guest g2 = Guest.builder()
                 .nomeCompleto("Cecile Azambuja")
-                .codigoConvite("Ceci123")
+                .codigoConvite("CECI123")
                 .statusConvite(GuestStatus.PENDENTE)
                 .lado("FAMILIA")
                 .build();

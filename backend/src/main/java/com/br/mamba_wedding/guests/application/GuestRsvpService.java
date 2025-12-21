@@ -18,19 +18,24 @@ public class GuestRsvpService {
 
     @Transactional(readOnly = true)
     public RsvpResponse lookup(String codigoConvite) {
-        Guest guest = guestRepository.findByCodigoConvite(codigoConvite)
+        String normalizedCode = normalizeCodigoConvite(codigoConvite);
+        Guest guest = guestRepository.findByCodigoConvite(normalizedCode)
                 .orElseThrow(() -> new IllegalArgumentException("Código de convite inválido."));
 
         return new RsvpResponse(
                 guest.getNomeCompleto(),
                 guest.getCodigoConvite(),
-                guest.getStatusConvite()
+                guest.getStatusConvite(),
+                guest.getEmail(),
+                guest.getTelefone(),
+                guest.getObservacoes()
         );
     }
 
     @Transactional
     public void confirm(String codigoConvite, String email, String telefone, String observacoes) {
-        Guest guest = guestRepository.findByCodigoConvite(codigoConvite)
+        String normalizedCode = normalizeCodigoConvite(codigoConvite);
+        Guest guest = guestRepository.findByCodigoConvite(normalizedCode)
                 .orElseThrow(() -> new IllegalArgumentException("Código de convite inválido."));
 
         guest.setStatusConvite(GuestStatus.CONFIRMADO);
@@ -45,7 +50,8 @@ public class GuestRsvpService {
 
     @Transactional
     public void decline(String codigoConvite, String email, String telefone, String observacoes) {
-        Guest guest = guestRepository.findByCodigoConvite(codigoConvite)
+        String normalizedCode = normalizeCodigoConvite(codigoConvite);
+        Guest guest = guestRepository.findByCodigoConvite(normalizedCode)
                 .orElseThrow(() -> new IllegalArgumentException("Código de convite inválido."));
 
         guest.setStatusConvite(GuestStatus.RECUSADO);
@@ -56,5 +62,9 @@ public class GuestRsvpService {
         if (observacoes != null && !observacoes.isBlank()) guest.setObservacoes(observacoes);
 
         guestRepository.save(guest);
+    }
+
+    private String normalizeCodigoConvite(String codigoConvite){
+        return codigoConvite == null ? null : codigoConvite.trim().toUpperCase();
     }
 }

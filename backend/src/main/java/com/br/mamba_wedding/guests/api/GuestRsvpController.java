@@ -1,11 +1,11 @@
 package com.br.mamba_wedding.guests.api;
 
 
+import com.br.mamba_wedding.guests.api.dto.RsvpActionRequest;
 import com.br.mamba_wedding.guests.api.dto.RsvpLookupRequest;
 import com.br.mamba_wedding.guests.api.dto.RsvpResponse;
 import com.br.mamba_wedding.guests.application.GuestRsvpService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,24 +23,24 @@ public class GuestRsvpController {
     }
 
     @PostMapping("/confirm")
-    public ResponseEntity<Void> confirm(
-            @RequestParam String codigoConvite,
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) String telefone,
-            @RequestParam(required = false) @Size(max = 255) String observacoes
-    ) {
-        guestRsvpService.confirm(codigoConvite, email, telefone, observacoes);
+    public ResponseEntity<Void> confirm(@Valid @RequestBody RsvpActionRequest request) {
+        guestRsvpService.confirm(
+                request.codigoConvite(),
+                request.email(),
+                request.telefone(),
+                request.observacoes()
+        );
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/decline")
-    public ResponseEntity<Void> decline(
-            @RequestParam String codigoConvite,
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) String telefone,
-            @RequestParam(required = false) @Size(max = 255) String observacoes
-    ) {
-        guestRsvpService.decline(codigoConvite, email, telefone, observacoes);
+    public ResponseEntity<Void> decline(@Valid @RequestBody RsvpActionRequest request) {
+        guestRsvpService.decline(
+                request.codigoConvite(),
+                request.email(),
+                request.telefone(),
+                request.observacoes()
+        );
         return ResponseEntity.noContent().build();
     }
 }
