@@ -42,8 +42,8 @@ mamba-wedding/
 
 ### Bancos de Dados
 
-* MySQL 8+ (dados core: convidados, presentes, pagamentos, RSVP)
-* MongoDB 8+ (recados e logs de eventos)
+* MySQL 8 (dados core: convidados, presentes, pagamentos, RSVP)
+* MongoDB 8 (recados e logs de eventos)
 
 ### Infraestrutura
 
