@@ -1,52 +1,98 @@
-<div class="container">
-  <h1>RSVP Mamba Wedding 🐍💍</h1>
+<div class="main-wrapper">
+  
+  <div class="polaroid p1 floating" (click)="openPhoto('assets/foto-casal-1.jpg')">
+    <img src="assets/foto-casal-1.jpg" alt="Nós dois" />
+  </div>
+  <div class="polaroid p2 floating-delayed" (click)="openPhoto('assets/foto-casal-2.jpg')">
+    <img src="assets/foto-casal-2.jpg" alt="Love" />
+  </div>
 
-  <div *ngIf="!guestData() && !successMessage()">
-    <form [formGroup]="lookupForm" (ngSubmit)="onLookup()">
-      <label for="code">Digite o código do seu convite:</label>
-      <input id="code" type="text" formControlName="codigoConvite" placeholder="Ex: MAMBA-123" />
+  <div class="lightbox-overlay fade-in" *ngIf="expandedPhoto()" (click)="closePhoto()">
+    <div class="lightbox-content">
+      <img [src]="expandedPhoto()" alt="Foto expandida" />
+      <span class="close-hint">Toque em qualquer lugar para fechar</span>
+    </div>
+  </div>
+
+  <div class="rsvp-card">
+    <header class="card-header">
+      <div class="icon">💍</div>
+      <h1>Mamba Wedding</h1>
+      <p class="subtitle">Confirme sua presença neste momento especial</p>
+    </header>
+
+    <section *ngIf="!guestData() && !successMessage()" class="step-section fade-in">
+      <form [formGroup]="lookupForm" (ngSubmit)="onLookup()">
+        <label for="code">Código do Convite</label>
+        <div class="input-group">
+          <input 
+            id="code" 
+            type="text" 
+            formControlName="codigoConvite" 
+            placeholder="Ex: MAMBA-2026" 
+            autocomplete="off"
+          />
+          <button type="submit" [disabled]="lookupForm.invalid || isLoading()">
+            <span *ngIf="!isLoading()">Buscar</span>
+            <span *ngIf="isLoading()" class="loader"></span>
+          </button>
+        </div>
+        <p class="hint">O código está no seu convite individual.</p>
+      </form>
       
-      <button type="submit" [disabled]="lookupForm.invalid || isLoading()">
-        {{ isLoading() ? 'Buscando...' : 'Buscar Convite' }}
+      <div class="error-msg fade-in" *ngIf="errorMessage()">
+        {{ errorMessage() }}
+      </div>
+    </section>
+
+    <section *ngIf="guestData() && !successMessage()" class="step-section fade-in">
+      
+      <button class="btn-back-text" (click)="resetSearch()">
+        ← Voltar / Trocar Código
       </button>
-    </form>
-    
-    <p class="error" *ngIf="errorMessage()">{{ errorMessage() }}</p>
-  </div>
 
-  <div *ngIf="guestData() && !successMessage()">
-    <h2>Olá, {{ guestData()?.nomeCompleto }}!</h2>
-    <p>Situação atual: <strong>{{ guestData()?.statusConvite }}</strong></p>
-
-    <form [formGroup]="actionForm">
-      <div class="form-group">
-        <label>Email:</label>
-        <input type="email" formControlName="email" />
+      <div class="guest-info">
+        <h2>Olá, {{ guestData()?.nomeCompleto }}!</h2>
+        <span class="status-badge" [class]="guestData()?.statusConvite">
+          {{ guestData()?.statusConvite }}
+        </span>
       </div>
 
-      <div class="form-group">
-        <label>Telefone/WhatsApp:</label>
-        <input type="text" formControlName="telefone" />
-      </div>
+      <form [formGroup]="actionForm" class="details-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" formControlName="email" placeholder="seu@email.com" />
+          </div>
+          <div class="form-group">
+            <label>WhatsApp</label>
+            <input type="tel" formControlName="telefone" placeholder="(XX) 9XXXX-XXXX" />
+          </div>
+        </div>
 
-      <div class="form-group">
-        <label>Observações (restrições alimentares, etc):</label>
-        <textarea formControlName="observacoes"></textarea>
-      </div>
+        <div class="form-group">
+          <label>Observações (alergias, restrições, etc.)</label>
+          <textarea formControlName="observacoes" placeholder="Alguma restrição alimentar? Ou apenas deixe seu carinho!"></textarea>
+        </div>
 
-      <div class="actions">
-        <button type="button" (click)="submitRsvp(true)" class="btn-confirm" [disabled]="isLoading()">
-          Confirmar Presença
-        </button>
-        <button type="button" (click)="submitRsvp(false)" class="btn-decline" [disabled]="isLoading()">
-          Recusar
-        </button>
-      </div>
-    </form>
-  </div>
+        <div class="actions">
+          <button type="button" (click)="submitRsvp(true)" class="btn-confirm" [disabled]="isLoading()">
+            Confirmar Presença ✨
+          </button>
+          <button type="button" (click)="submitRsvp(false)" class="btn-decline" [disabled]="isLoading()">
+            Não poderei ir 💔
+          </button>
+        </div>
+      </form>
+    </section>
 
-  <div *ngIf="successMessage()" class="success-box">
-    <h3>{{ successMessage() }}</h3>
-    <button (click)="successMessage.set(''); guestData.set(null); lookupForm.reset()">Voltar</button>
+    <section *ngIf="successMessage()" class="success-section fade-in">
+      <div class="success-icon">💌</div>
+      <h3>Obrigado!</h3>
+      <p>{{ successMessage() }}</p>
+      <button class="btn-outline" (click)="resetSearch()">
+        Voltar ao início
+      </button>
+    </section>
   </div>
 </div>

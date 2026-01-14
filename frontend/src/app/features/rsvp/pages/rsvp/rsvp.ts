@@ -19,6 +19,8 @@ export class Rsvp {
   isLoading = signal(false);
   errorMessage = signal('');
   successMessage = signal('');
+  
+  expandedPhoto = signal<string | null>(null);
 
   lookupForm = this.fb.group({
     codigoConvite: ['', [Validators.required, Validators.minLength(3)]]
@@ -29,6 +31,20 @@ export class Rsvp {
     telefone: ['', [Validators.required]],
     observacoes: ['']
   });
+
+  openPhoto(src: string) {
+    this.expandedPhoto.set(src);
+  }
+
+  closePhoto() {
+    this.expandedPhoto.set(null);
+  }
+
+  resetSearch() {
+    this.guestData.set(null);
+    this.lookupForm.reset();
+    this.errorMessage.set('');
+  }
 
   onLookup() {
     if (this.lookupForm.invalid) return;
@@ -50,7 +66,7 @@ export class Rsvp {
       },
       error: (err) => {
         console.error(err);
-        this.errorMessage.set('Convite não encontrado ou erro no servidor.');
+        this.errorMessage.set('Convite não encontrado. Verifique o código.');
         this.isLoading.set(false);
         this.guestData.set(null);
       }

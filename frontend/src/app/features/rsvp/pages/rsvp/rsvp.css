@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap');
+
+:host {
+  --primary-black: #1a1a1a;
+  --secondary-pink: #f8bbd0;
+  --bg-gradient: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+  --white: #ffffff;
+  --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.15);
+  
+  display: block;
+  min-height: 100vh;
+  background: var(--bg-gradient);
+  font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* --- Layout Principal --- */
+.main-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  position: relative;
+}
+
+.rsvp-card {
+  background: var(--white);
+  width: 100%;
+  max-width: 480px;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  position: relative;
+  z-index: 20;
+}
+
+/* --- Tipografia --- */
+h1 { font-family: 'Cinzel', serif; color: var(--primary-black); font-size: 2rem; margin: 0.5rem 0; }
+h2 { font-family: 'Cinzel', serif; color: var(--primary-black); font-size: 1.5rem; }
+.subtitle { color: #666; font-size: 0.9rem; margin-bottom: 2rem; }
+
+/* --- FOTOS POLAROID --- */
+.polaroid {
+  position: absolute;
+  background: white;
+  padding: 12px 12px 40px 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transform: rotate(-5deg);
+  z-index: 1;
+  width: 240px;
+  cursor: zoom-in;
+  transition: transform 0.3s ease, z-index 0s 0.3s;
+}
+
+.polaroid img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: sepia(20%);
+}
+
+.polaroid:hover {
+  transform: rotate(0deg) scale(1.1);
+  z-index: 30;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+  transition: transform 0.3s ease, z-index 0s;
+}
+
+.p1 { top: 5%; left: 5%; transform: rotate(-8deg); }
+.p2 { bottom: 5%; right: 5%; transform: rotate(5deg); }
+
+/* --- LIGHTBOX  --- */
+.lightbox-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: zoom-out;
+  padding: 20px;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lightbox-content img {
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 4px;
+  box-shadow: 0 0 50px rgba(0,0,0,0.5);
+  border: 10px solid white;
+  background: white;
+}
+
+.close-hint {
+  color: white;
+  margin-top: 15px;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  font-weight: 300;
+}
+
+/* --- Botão VOLTAR --- */
+.btn-back-text {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 1rem;
+  display: block;
+  width: 100%;
+  text-align: left;
+  transition: color 0.2s;
+}
+
+.btn-back-text:hover {
+  color: var(--primary-black);
+  text-decoration: underline;
+}
+
+/* --- Inputs e Botões Gerais --- */
+label { display: block; text-align: left; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.5rem; margin-top: 1rem; }
+input, textarea { width: 100%; padding: 14px; border: 2px solid #eee; border-radius: 12px; font-family: inherit; font-size: 1rem; background: #fafafa; box-sizing: border-box; }
+input:focus, textarea:focus { outline: none; border-color: var(--secondary-pink); background: white; }
+button { cursor: pointer; border-radius: 12px; font-weight: 600; font-size: 1rem; border: none;}
+
+/* Botão Buscar */
+.input-group { display: flex; gap: 10px; }
+.input-group button { background: var(--primary-black); color: var(--secondary-pink); padding: 0 24px; white-space: nowrap; }
+
+/* Ações */
+.actions { display: flex; flex-direction: column; gap: 10px; margin-top: 2rem; }
+.btn-confirm { background: var(--primary-black); color: white; padding: 16px; width: 100%; }
+.btn-decline { background: transparent; color: #666; padding: 16px; width: 100%; border: 1px solid #ddd; }
+.btn-decline:hover { background: #ffebee; color: #c62828; border-color: #ffcdd2; }
+.btn-outline { background: transparent; border: 2px solid var(--primary-black); color: var(--primary-black); padding: 12px 24px; margin-top: 1rem; }
+
+/* Status Badge */
+.status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; margin-bottom: 1.5rem; background: #eee; color: #555; }
+.status-badge.CONFIRMADO { background: #e8f5e9; color: #2e7d32; }
+.status-badge.RECUSADO { background: #ffebee; color: #c62828; }
+
+/* Animações */
+.fade-in { animation: fadeIn 0.4s ease-out forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* --- Mobile --- */
+@media (max-width: 768px) {
+  .rsvp-card { margin-top: 20px; padding: 1.5rem; }
+  
+  .polaroid { width: 120px; position: fixed; }
+  .p1 { top: auto; bottom: 10px; left: 10px; transform: rotate(-10deg); }
+  .p2 { top: auto; bottom: 10px; right: 10px; transform: rotate(10deg); }
+  
+  .input-group { flex-direction: column; }
+  .input-group button { width: 100%; padding: 14px; }
+}
