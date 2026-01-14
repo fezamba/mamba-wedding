@@ -14,12 +14,12 @@
   </div>
 
   <div class="mobile-photos">
-    <div class="polaroid m-p1" (click)="openPhoto('assets/foto-casal-1.jpg')"><img src="assets/foto-casal-1.jpg" onerror="this.src='assets/foto-casal-1.jpg'"></div>
-    <div class="polaroid m-p2" (click)="openPhoto('assets/foto-casal-2.jpg')"><img src="assets/foto-casal-2.jpg" onerror="this.src='assets/foto-casal-1.jpg'"></div>
-    <div class="polaroid m-p3" (click)="openPhoto('assets/foto-casal-3.jpg')"><img src="assets/foto-casal-3.jpg" onerror="this.src='assets/foto-casal-1.jpg'"></div>
-    <div class="polaroid m-p4" (click)="openPhoto('assets/foto-casal-4.jpg')"><img src="assets/foto-casal-4.jpg" onerror="this.src='assets/foto-casal-1.jpg'"></div>
-    <div class="polaroid m-p5" (click)="openPhoto('assets/foto-casal-5.jpg')"><img src="assets/foto-casal-5.jpg" onerror="this.src='assets/foto-casal-1.jpg'"></div>
-    <div class="polaroid m-p6" (click)="openPhoto('assets/foto-casal-6.jpg')"><img src="assets/foto-casal-6.jpg" onerror="this.src='assets/foto-casal-1.jpg'"></div>
+    <div class="polaroid m-p1"><img src="assets/foto-casal-1.jpg" onerror="this.src='assets/foto-casal-1.jpg'"></div>
+    <div class="polaroid m-p2"><img src="assets/foto-casal-2.jpg" onerror="this.src='assets/foto-casal-1.jpg'"></div>
+    <div class="polaroid m-p3"><img src="assets/foto-casal-3.jpg" onerror="this.src='assets/foto-casal-1.jpg'"></div>
+    <div class="polaroid m-p4"><img src="assets/foto-casal-4.jpg" onerror="this.src='assets/foto-casal-1.jpg'"></div>
+    <div class="polaroid m-p5"><img src="assets/foto-casal-5.jpg" onerror="this.src='assets/foto-casal-1.jpg'"></div>
+    <div class="polaroid m-p6"><img src="assets/foto-casal-6.jpg" onerror="this.src='assets/foto-casal-1.jpg'"></div>
   </div>
 
   <div class="lightbox-overlay fade-in" *ngIf="expandedPhoto()" (click)="closePhoto()">
@@ -60,7 +60,12 @@
     </section>
 
     <section *ngIf="guestData() && !successMessage()" class="step-section fade-in">
-      <button class="btn-back-text" (click)="resetSearch()">← Voltar / Trocar Código</button>
+      
+      <div class="nav-header">
+        <button class="btn-back-icon" (click)="resetSearch()">
+          <span class="arrow">←</span> Voltar
+        </button>
+      </div>
 
       <div class="guest-info">
         <h2>Olá, {{ guestData()?.nomeCompleto }}!</h2>

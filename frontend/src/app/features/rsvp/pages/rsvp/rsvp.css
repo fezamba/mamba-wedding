@@ -7,11 +7,11 @@
   --white: #ffffff;
   
   display: block;
-  height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
+  width: 100%;
   background: var(--bg-gradient);
   font-family: 'Montserrat', sans-serif;
-  overflow: hidden;
+  overflow-x: hidden;
   position: relative;
 }
 
@@ -19,8 +19,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  min-height: 100vh;
   width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
   position: relative;
 }
 
@@ -40,6 +42,7 @@
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--secondary-pink) transparent;
+  box-sizing: border-box;
 }
 
 .polaroid {
@@ -53,10 +56,28 @@
   z-index: 1;
 }
 
-.polaroid img { width: 100%; display: block; filter: sepia(15%); border: 1px solid #eee; }
-.polaroid:hover { transform: scale(1.1) rotate(0deg) !important; z-index: 50; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+.polaroid img { 
+  width: 100%; 
+  display: block; 
+  filter: sepia(15%); 
+  border: 1px solid #eee; 
+}
 
-.desktop-photos { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+.polaroid:hover { 
+  transform: scale(1.1) rotate(0deg) !important; 
+  z-index: 50; 
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3); 
+}
+
+.desktop-photos { 
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%; 
+  pointer-events: none; 
+}
+
 .desktop-photos .polaroid { width: 150px; }
 
 .p1 { top: 5%; left: 2%; transform: rotate(-15deg); }
@@ -64,7 +85,6 @@
 .p3 { top: 55%; left: 2%; transform: rotate(-8deg); }
 .p4 { bottom: 5%; left: 5%; transform: rotate(12deg); }
 .p5 { top: 10%; left: 20%; transform: rotate(6deg); }
-
 .p6 { top: 5%; right: 2%; transform: rotate(10deg); }
 .p7 { top: 35%; right: 5%; transform: rotate(-5deg); }
 .p8 { top: 60%; right: 2%; transform: rotate(8deg); }
@@ -78,42 +98,107 @@ h2 { font-family: 'Cinzel', serif; color: var(--primary-black); font-size: 1.5re
 .subtitle { color: #666; font-size: 0.9rem; margin-bottom: 2rem; }
 
 label { display: block; text-align: left; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.5rem; margin-top: 1rem; }
-input, textarea { width: 100%; padding: 14px; border: 2px solid #eee; border-radius: 12px; font-family: inherit; font-size: 1rem; background: #fafafa; box-sizing: border-box; }
-input:focus, textarea:focus { outline: none; border-color: var(--secondary-pink); background: white; }
-button { cursor: pointer; border-radius: 12px; font-weight: 600; font-size: 1rem; border: none;}
+
+input, textarea { 
+  width: 100%; 
+  padding: 14px; 
+  border: 2px solid #eee; 
+  border-radius: 12px; 
+  font-family: inherit; 
+  font-size: 1rem; 
+  background: #fafafa; 
+  box-sizing: border-box; 
+}
+
+input:focus, textarea:focus { 
+  outline: none; 
+  border-color: var(--secondary-pink); 
+  background: white; 
+}
+
+button { 
+  cursor: pointer; 
+  border-radius: 12px; 
+  font-weight: 600; 
+  font-size: 1rem; 
+  border: none;
+}
 
 .input-group { display: flex; gap: 10px; }
 .input-group button { background: var(--primary-black); color: var(--secondary-pink); padding: 0 24px; white-space: nowrap; }
+
+.nav-header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 15px;
+}
+
+.btn-back-icon {
+  background: transparent;
+  color: #888;
+  font-size: 0.9rem;
+  padding: 8px 0;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+
+.btn-back-icon:hover {
+  color: var(--primary-black);
+}
+
+.arrow { font-size: 1.2rem; line-height: 0.8; }
+
 .actions { display: flex; flex-direction: column; gap: 10px; margin-top: 2rem; }
+
 .btn-confirm { background: var(--primary-black); color: white; padding: 16px; width: 100%; }
 .btn-decline { background: transparent; color: #666; padding: 16px; width: 100%; border: 1px solid #ddd; }
-.btn-back-text { background: none; border: none; color: #999; font-size: 0.85rem; padding: 0; margin-bottom: 1rem; width: 100%; text-align: left; }
-.btn-back-text:hover { color: var(--primary-black); text-decoration: underline; }
 .btn-outline { background: transparent; border: 2px solid var(--primary-black); color: var(--primary-black); padding: 12px 24px; margin-top: 1rem; }
 
-.lightbox-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 200; display: flex; justify-content: center; align-items: center; flex-direction: column; }
-.lightbox-content img { max-width: 90vw; max-height: 80vh; border: 10px solid white; border-bottom: 30px solid white; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+.lightbox-overlay { 
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100vw; 
+  height: 100vh; 
+  background: rgba(0,0,0,0.9); 
+  z-index: 200; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  flex-direction: column; 
+}
+
+.lightbox-content img { 
+  max-width: 90vw; 
+  max-height: 80vh; 
+  border: 10px solid white; 
+  border-bottom: 30px solid white; 
+  box-shadow: 0 0 50px rgba(0,0,0,0.5); 
+}
 
 .status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; margin-bottom: 1.5rem; background: #eee; color: #555; }
 .status-badge.CONFIRMADO { background: #e8f5e9; color: #2e7d32; }
 .status-badge.RECUSADO { background: #ffebee; color: #c62828; }
+
 .fade-in { animation: fadeIn 0.4s ease-out forwards; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 @media (max-width: 768px) {
   :host {
-    overflow-y: auto;
-    overflow-x: hidden;
     height: auto;
-    min-height: 100vh;
+    overflow-y: visible; 
   }
 
   .main-wrapper {
-    display: block;
-    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
     min-height: 100vh;
-    box-sizing: border-box;
-    overflow: visible;
+    padding: 20px 15px;
   }
 
   .desktop-photos { display: none; }
@@ -121,8 +206,10 @@ button { cursor: pointer; border-radius: 12px; font-weight: 600; font-size: 1rem
   .mobile-photos { 
     display: block; 
     position: fixed;
-    top: 0; left: 0; 
-    width: 100%; height: 100%; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
     z-index: 0;
     pointer-events: none;
   }
@@ -130,29 +217,24 @@ button { cursor: pointer; border-radius: 12px; font-weight: 600; font-size: 1rem
   .mobile-photos .polaroid {
     width: 100px;
     z-index: 1;
-    pointer-events: auto;
+    pointer-events: none;
   }
 
   .m-p1 { top: 10px; left: -10px; transform: rotate(-15deg); }
   .m-p2 { top: 20px; right: -10px; transform: rotate(10deg); }
-  
   .m-p3 { top: 35%; left: -25px; transform: rotate(5deg); }
   .m-p4 { top: 55%; right: -25px; transform: rotate(-8deg); }
-  
   .m-p5 { bottom: 20px; left: -10px; transform: rotate(-5deg); }
   .m-p6 { bottom: 20px; right: -10px; transform: rotate(12deg); }
 
   .rsvp-card {
-    position: relative;
-    z-index: 10;
-    margin: 100px auto;
+    margin: auto; 
     width: 100%;
-    max-width: 100%;
-    background: rgba(255, 255, 255, 0.96);
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    max-width: 400px;
+    padding: 1.5rem;
     max-height: none; 
     overflow: visible;
+    box-sizing: border-box;
   }
   
   .input-group { flex-direction: column; }

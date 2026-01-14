@@ -19,8 +19,7 @@ public class GuestRsvpService {
 
     @Transactional(readOnly = true)
     public RsvpResponse lookup(String codigoConvite) {
-        String normalizedCode = normalizeCodigoConvite(codigoConvite);
-        Guest guest = guestRepository.findByCodigoConvite(normalizedCode)
+        Guest guest = guestRepository.findByCodigoConvite(codigoConvite)
                 .orElseThrow(GuestNotFoundException::new);
 
         return new RsvpResponse(
@@ -35,37 +34,31 @@ public class GuestRsvpService {
 
     @Transactional
     public void confirm(String codigoConvite, String email, String telefone, String observacoes) {
-        String normalizedCode = normalizeCodigoConvite(codigoConvite);
-        Guest guest = guestRepository.findByCodigoConvite(normalizedCode)
+        Guest guest = guestRepository.findByCodigoConvite(codigoConvite)
                 .orElseThrow(GuestNotFoundException::new);
 
         guest.setStatusConvite(GuestStatus.CONFIRMADO);
         guest.setRsvpEm(LocalDateTime.now());
-
-        if (email != null && !email.isBlank()) guest.setEmail(email);
-        if (telefone != null && !telefone.isBlank()) guest.setTelefone(telefone);
-        if (observacoes != null && !observacoes.isBlank()) guest.setObservacoes(observacoes);
+        
+        guest.setEmail(email != null && email.trim().isEmpty() ? null : email);
+        guest.setTelefone(telefone != null && telefone.trim().isEmpty() ? null : telefone);
+        guest.setObservacoes(observacoes != null && observacoes.trim().isEmpty() ? null : observacoes);
 
         guestRepository.save(guest);
     }
 
     @Transactional
     public void decline(String codigoConvite, String email, String telefone, String observacoes) {
-        String normalizedCode = normalizeCodigoConvite(codigoConvite);
-        Guest guest = guestRepository.findByCodigoConvite(normalizedCode)
+        Guest guest = guestRepository.findByCodigoConvite(codigoConvite)
                 .orElseThrow(GuestNotFoundException::new);
 
         guest.setStatusConvite(GuestStatus.RECUSADO);
         guest.setRsvpEm(LocalDateTime.now());
 
-        if (email != null && !email.isBlank()) guest.setEmail(email);
-        if (telefone != null && !telefone.isBlank()) guest.setTelefone(telefone);
-        if (observacoes != null && !observacoes.isBlank()) guest.setObservacoes(observacoes);
+        guest.setEmail(email != null && email.trim().isEmpty() ? null : email);
+        guest.setTelefone(telefone != null && telefone.trim().isEmpty() ? null : telefone);
+        guest.setObservacoes(observacoes != null && observacoes.trim().isEmpty() ? null : observacoes);
 
         guestRepository.save(guest);
-    }
-
-    private String normalizeCodigoConvite(String codigoConvite){
-        return codigoConvite == null ? null : codigoConvite.trim().toUpperCase();
     }
 }
