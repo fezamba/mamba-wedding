@@ -22,8 +22,8 @@ mamba-wedding/
 
 ### Frontend
 
-* Angular 19
 * TypeScript
+* Angular 19
 * Angular Router
 * Angular Material
 
@@ -73,7 +73,7 @@ mamba-wedding/
 * codigoConvite
 * statusConvite (PENDENTE, CONFIRMADO, RECUSADO)
 * rsvpEm
-* lado (noivo, noiva, amigos, família)
+* lado (noivo, noiva)
 * email (opcional)
 * telefone (opcional)
 * observacoes (opcional)
