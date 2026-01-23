@@ -25,18 +25,26 @@ public class GuestDataSeeder implements CommandLineRunner {
                 .nomeCompleto("Fabiana Maia")
                 .codigoConvite("FABI123")
                 .statusConvite(GuestStatus.PENDENTE)
-                .lado("FAMILIA")
+                .lado("NOIVA")
                 .build();
 
         Guest g2 = Guest.builder()
                 .nomeCompleto("Cecile Azambuja")
                 .codigoConvite("CECI123")
                 .statusConvite(GuestStatus.PENDENTE)
-                .lado("FAMILIA")
+                .lado("NOIVO")
+                .build();
+        
+            Guest g3 = Guest.builder()
+                .nomeCompleto("Eliane Azambuja")
+                .codigoConvite("ELIA123")
+                .statusConvite(GuestStatus.PENDENTE)
+                .lado("NOIVO")
                 .build();
 
         guestRepository.save(g1);
         guestRepository.save(g2);
+        guestRepository.save(g3);
 
         System.out.println(">>> Convidados de teste inseridos com sucesso");
     }
