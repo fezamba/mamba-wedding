@@ -38,15 +38,15 @@
         </div>
 
         <form [formGroup]="actionForm" class="form-grid">
-          <!-- FIXME: Colocar validação no campo de telefone -->
           <mat-form-field appearance="outline">
             <mat-label>Telefone</mat-label>
-            <input matInput type="tel" formControlName="telefone" placeholder="(00) 00000-0000">
+            <input matInput type="tel" formControlName="telefone" mask="(00) 00000-0000">
             <mat-icon matSuffix>phone</mat-icon>
               <mat-error *ngIf="actionForm.get('telefone')?.hasError('required')">
                 O telefone é obrigatório
               </mat-error>
           </mat-form-field>
+
           <mat-form-field appearance="outline">
             <mat-label>Email (Opcional)</mat-label>
             <input matInput type="email" formControlName="email" placeholder="exemplo@email.com">
@@ -60,10 +60,10 @@
         </form>
 
         <div class="actions-buttons">
-          <button mat-flat-button color="primary" (click)="submitRsvp(true)" [disabled]="isLoading()">
+          <button mat-flat-button color="primary" (click)="submitRsvp(true)" [disabled]="isLoading() || actionForm.invalid">
             CONFIRMAR PRESENÇA
           </button>
-          <button mat-stroked-button color="warn" (click)="submitRsvp(false)" [disabled]="isLoading()">
+          <button mat-stroked-button color="warn" (click)="submitRsvp(false)" [disabled]="isLoading() || actionForm.invalid">
             NÃO PODEREI IR
           </button>
           <button mat-button (click)="resetSearch()">Voltar</button>

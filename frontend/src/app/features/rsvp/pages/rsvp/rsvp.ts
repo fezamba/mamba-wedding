@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'app-rsvp',
@@ -24,7 +25,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatButtonModule,
     MatIconModule,
     MatProgressBarModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    NgxMaskDirective
   ],
   templateUrl: './rsvp.html',
   styleUrl: './rsvp.css',
@@ -45,7 +47,7 @@ export class Rsvp {
 
   actionForm = this.fb.group({
     email: ['', [Validators.email]],
-    telefone: [''], 
+    telefone: ['', [Validators.required, Validators.pattern("^\\d{11}$")]],
     observacoes: ['']
   });
 
@@ -85,6 +87,21 @@ export class Rsvp {
   submitRsvp(isConfirm: boolean) {
     this.isLoading.set(true);
     const codigo = this.guestData()?.codigoConvite!;
+
+    if (this.actionForm.invalid) {
+      this.actionForm.markAllAsTouched();
+      return;
+    }
+
+    const rawTelefone = this.actionForm.get('telefone')?.value;
+    const digits = String(rawTelefone ?? '').replace(/\D/g, '');
+
+    if (digits.length !== 11) {
+      this.actionForm.get('telefone')?.setErrors({ length: true });
+      return;
+    }
+
+  this.actionForm.patchValue({ telefone: digits }, { emitEvent: false });
     
     const payload = {
       codigoConvite: codigo,
