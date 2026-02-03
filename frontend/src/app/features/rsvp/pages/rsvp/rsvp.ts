@@ -46,7 +46,7 @@ export class Rsvp {
   });
 
   actionForm = this.fb.group({
-    email: ['', [Validators.email]],
+    email: ['', [Validators.email, Validators.required, Validators.maxLength(120)]],
     telefone: ['', [Validators.required, Validators.pattern("^\\d{11}$")]],
     observacoes: ['']
   });

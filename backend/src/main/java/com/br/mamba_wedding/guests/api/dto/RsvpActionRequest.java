@@ -10,11 +10,11 @@ public record RsvpActionRequest(
     @Size(min = 3, max = 32)
     String codigoConvite,
 
-    // FIXME: Incluir números de outros países no futuro
     @NotBlank(message = "Telefone é obrigatório")
     @Pattern(regexp = "^\\d{11}$", message = "Telefone inválido")
     String telefone,
 
+    @NotBlank(message = "Email é obrigatório")
     @Size(max = 120)
     @Email
     String email,
