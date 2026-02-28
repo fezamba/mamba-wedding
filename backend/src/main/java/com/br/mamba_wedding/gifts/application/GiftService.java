@@ -84,6 +84,7 @@ public class GiftService {
         giftRepository.save(gift);
     }
 
+    // isso aqui ta xexelento cara, a reserva fica presa até alguém fazer algo
     private void expirarSeNecessario(Gift gift) {
         if (gift.getStatus() == GiftStatus.RESERVADO
             && gift.getReservadoAte() != null
