@@ -53,6 +53,7 @@ public class GiftService {
         giftRepository.save(gift);
     }
 
+    // provavelmente vai ter algo mais complexo aqui, vou receber uma confirmação do gateway de pagamento e aí sim disparar esse bebezinho, vou ver com calma depois
     @Transactional
     public void comprar(Long giftId){
         Gift gift = giftRepository.findById(giftId)
