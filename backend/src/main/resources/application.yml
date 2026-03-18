@@ -17,6 +17,7 @@ spring:
         '[format_sql]': true
     open-in-view: false
 
+# TODO: Switch to neo4j in future
   mongodb:
     uri: mongodb://localhost:27017/mamba_mongo
     
