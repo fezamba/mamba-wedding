@@ -18,6 +18,7 @@ public class SecurityConfig {
 
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/rsvp/**").permitAll()
+                .requestMatchers("/api/gifts/**").permitAll()
 
                 .requestMatchers(
                     "/swagger-ui.html",

@@ -3,6 +3,10 @@ package com.br.mamba_wedding.gifts.application;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.scheduling.annotation.Scheduled;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.br.mamba_wedding.common.exception.NotFoundException;
 import com.br.mamba_wedding.gifts.domain.Gift;
 import com.br.mamba_wedding.gifts.domain.GiftStatus;
@@ -15,6 +19,8 @@ import java.util.List;
 public class GiftService {
     private final GiftRepository giftRepository;
 
+    private static final Logger log = LoggerFactory.getLogger(GiftService.class);
+
     public GiftService(GiftRepository giftRepository) {
         this.giftRepository = giftRepository;
     }
@@ -22,7 +28,7 @@ public class GiftService {
     public List<Gift> listAll() {
         List<Gift> gifts = giftRepository.findAll();
 
-        gifts.forEach(this::expirarSeNecessario);
+        // gifts.forEach(this::expirarSeNecessario);
 
         return gifts;
     }
@@ -38,7 +44,7 @@ public class GiftService {
         Gift gift = giftRepository.findById(giftId)
                 .orElseThrow(() -> new NotFoundException("Presente não encontrado"));
 
-        expirarSeNecessario(gift);
+        // expirarSeNecessario(gift);
 
         if (gift.getStatus() != GiftStatus.DISPONIVEL) {
             throw new IllegalStateException("Presente já reservado/comprado");
@@ -55,7 +61,7 @@ public class GiftService {
         Gift gift = giftRepository.findById(giftId)
                 .orElseThrow(() -> new NotFoundException("Presente não encontrado"));
         
-        expirarSeNecessario(gift);
+        // expirarSeNecessario(gift);
 
         if (gift.getStatus() != GiftStatus.RESERVADO) {
             throw new IllegalStateException("Apenas presentes reservados podem ter a reserva cancelada.");
@@ -73,7 +79,7 @@ public class GiftService {
         Gift gift = giftRepository.findById(giftId)
                 .orElseThrow(() -> new NotFoundException("Presente não encontrado"));
 
-        expirarSeNecessario(gift);
+        // expirarSeNecessario(gift);
 
         if (gift.getStatus() != GiftStatus.RESERVADO) {
             throw new IllegalStateException("Presente já reservado/comprado");
@@ -84,7 +90,26 @@ public class GiftService {
         giftRepository.save(gift);
     }
 
-    // FIXME: isso aqui ta xexelento cara, a reserva fica presa até alguém fazer algo
+    @Transactional
+    @Scheduled(fixedRate = 60000) // 1 minuto
+    public void limparReservasExpiradas(){
+        LocalDateTime now = LocalDateTime.now();
+
+        List<Gift> expired = giftRepository.findByStatusAndReservadoAteBefore(GiftStatus.RESERVADO, now);
+
+        if (!expired.isEmpty()){
+            log.info("Found {} presents with expired reserve. Canceling reserves...", expired.size());
+        }
+
+        for (Gift gift : expired){
+            gift.setStatus(GiftStatus.DISPONIVEL);
+            gift.setReservadoPor(null);
+            gift.setReservadoEm(null);
+            gift.setReservadoAte(null);
+        }
+    }
+
+    /* 
     private void expirarSeNecessario(Gift gift) {
         if (gift.getStatus() == GiftStatus.RESERVADO
             && gift.getReservadoAte() != null
@@ -95,4 +120,5 @@ public class GiftService {
             gift.setReservadoAte(null);
         }
     }
+    */
 }
