@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/gifts")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*") //TODO: Substituir pela URL do front em PRD. 
+@CrossOrigin(origins = "*")
 public class GiftController {
 
     private final GiftService giftService;
