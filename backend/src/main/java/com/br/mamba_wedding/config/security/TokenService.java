@@ -5,6 +5,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.br.mamba_wedding.guests.domain.Guest;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -14,14 +16,20 @@ import java.time.ZoneOffset;
 @Service
 public class TokenService {
 
-    // FIXME: move secret to application.yml
-    private String secret = "secretmamba";
+    @Value("${api.security.token.secret}")
+    private String secret;
+
+    @Value("${api.security.token.issuer}")
+    private String issuer;
+
+    @Value("${api.security.token.expiration-hours}")
+    private Integer expirationHours;
 
     public String generateToken(Guest guest) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
-                    .withIssuer("mamba-wedding-api")
+                    .withIssuer(issuer)
                     .withSubject(guest.getCodigoConvite())
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
@@ -34,7 +42,7 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
-                    .withIssuer("mamba-wedding-api")
+                    .withIssuer(issuer)
                     .build()
                     .verify(token)
                     .getSubject();
@@ -45,6 +53,6 @@ public class TokenService {
 
     // 2 hours
     private Instant genExpirationDate() {
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusHours(expirationHours).toInstant(ZoneOffset.of("-03:00"));
     }
 }
