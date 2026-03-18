@@ -1,7 +1,8 @@
 # Mamba Wedding – RSVP, Gift Registry and Admin Panel
 
-Este projeto é uma aplicação web completa para gerenciamento de casamento, composta por um site público para convidados e um painel administrativo para os noivos.
-O sistema permite confirmação de presença via código, gerenciamento de convidados, lista de presentes, integração com gateway de pagamento e armazenamento híbrido em MySQL e MongoDB.
+This project is a comprehensive web application for wedding management, comprising a public-facing website for guests and an administrative dashboard for the couple.
+
+The system features RSVP confirmation via access codes, guest management, a gift registry, payment gateway integration, and a hybrid storage architecture utilizing MySQL and MongoDB.
 
 ---
 
@@ -9,10 +10,10 @@ O sistema permite confirmação de presença via código, gerenciamento de convi
 
 ```
 mamba-wedding/
- ├── backend/          # Aplicação Spring Boot 
- ├── frontend/         # Aplicação React
- ├── infra/            # Configurações de infraestrutura
- ├── docs/             # Documentação
+ ├── backend/          # Spring Boot Application
+ ├── frontend/         # React Application
+ ├── infra/            # Infrastructure Configurations
+ ├── docs/             # Documentation
  └── README.md
 ```
 
@@ -37,7 +38,7 @@ mamba-wedding/
 * Spring Validation
 * Lombok
 
-### Bancos de Dados
+### Database
 
-* MySQL 8 (dados transacionais)
-* MongoDB 8 (recados e logs de eventos)
+* MySQL 8
+* MongoDB 8
