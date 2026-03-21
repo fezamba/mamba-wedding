@@ -30,12 +30,15 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/login").permitAll()
                 .requestMatchers("/api/rsvp/lookup").permitAll()
+                .requestMatchers("/api/admin/auth/google").permitAll()
 
                 .requestMatchers(
                     "/swagger-ui.html",
                     "/swagger-ui/**",
                     "/v3/api-docs/**"
                 ).permitAll()
+
+                .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
 
                 .anyRequest().authenticated()
             )

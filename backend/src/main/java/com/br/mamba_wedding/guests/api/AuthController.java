@@ -28,7 +28,7 @@ public class AuthController {
         Guest guest = guestRepository.findByCodigoConvite(request.codigoConvite())
                 .orElseThrow(() -> new GuestNotFoundException());
 
-        String token = tokenService.generateToken(guest);
+        String token = tokenService.generateToken(guest.getCodigoConvite(), "ROLE_GUEST");
 
         return ResponseEntity.ok(new LoginResponse(token));
     }

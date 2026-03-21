@@ -36,6 +36,10 @@ springdoc:
 
 api:
   security:
+    google:
+      client-id: ${GOOGLE_CLIENT_ID}
+    admin:
+      emails: ${ADMIN_EMAILS}
     token:
       secret: ${JWT_SECRET}
       issuer: ${JWT_ISSUER}

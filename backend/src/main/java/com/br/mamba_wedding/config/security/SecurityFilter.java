@@ -6,13 +6,16 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -30,16 +33,27 @@ public class SecurityFilter extends OncePerRequestFilter {
         var token = this.recoverToken(request);
         
         if (token != null) {
-            var codigoConvite = tokenService.validateToken(token);
-            
-            if (!codigoConvite.isEmpty()) {
-                Guest guest = guestRepository.findByCodigoConvite(codigoConvite)
-                        .orElseThrow(() -> new RuntimeException("Convidado não encontrado"));
-
-                // Collections.emptyList() --> not using Roles
-                var authentication = new UsernamePasswordAuthenticationToken(guest, null, Collections.emptyList());
+            var decodedJWT = tokenService.validateAndDecodeToken(token);
+            if (decodedJWT != null) {
+                String subject = decodedJWT.getSubject();
+                String roleString = decodedJWT.getClaim("role").asString();
                 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(roleString));
+                Object principal = null;
+
+                if ("ROLE_GUEST".equals(roleString)) {
+                    Guest guest = guestRepository.findByCodigoConvite(subject)
+                            .orElseThrow(() -> new RuntimeException("Convidado não encontrado"));
+                    principal = guest;
+                    
+                } else if ("ROLE_ADMIN".equals(roleString)) {
+                    principal = subject;
+                }
+
+                if (principal != null) {
+                    var authentication = new UsernamePasswordAuthenticationToken(principal, null, authorities);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
             }
         }
         filterChain.doFilter(request, response);
