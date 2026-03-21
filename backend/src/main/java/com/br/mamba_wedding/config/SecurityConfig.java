@@ -31,6 +31,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/login").permitAll()
                 .requestMatchers("/api/rsvp/lookup").permitAll()
                 .requestMatchers("/api/admin/auth/google").permitAll()
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/messages").permitAll()
 
                 .requestMatchers(
                     "/swagger-ui.html",
