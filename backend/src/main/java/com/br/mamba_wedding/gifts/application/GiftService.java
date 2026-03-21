@@ -28,8 +28,6 @@ public class GiftService {
     public List<Gift> listAll() {
         List<Gift> gifts = giftRepository.findAll();
 
-        // gifts.forEach(this::expirarSeNecessario);
-
         return gifts;
     }
 
@@ -43,8 +41,6 @@ public class GiftService {
     public void reservar(Long giftId, String reservadoPor){
         Gift gift = giftRepository.findById(giftId)
                 .orElseThrow(() -> new NotFoundException("Presente não encontrado"));
-
-        // expirarSeNecessario(gift);
 
         if (gift.getStatus() != GiftStatus.DISPONIVEL) {
             throw new IllegalStateException("Presente já reservado/comprado");
@@ -61,8 +57,6 @@ public class GiftService {
         Gift gift = giftRepository.findById(giftId)
                 .orElseThrow(() -> new NotFoundException("Presente não encontrado"));
         
-        // expirarSeNecessario(gift);
-
         if (gift.getStatus() != GiftStatus.RESERVADO) {
             throw new IllegalStateException("Apenas presentes reservados podem ter a reserva cancelada.");
         }
@@ -77,13 +71,10 @@ public class GiftService {
         giftRepository.save(gift);
     }
 
-    // provavelmente vai ter algo mais complexo aqui, vou receber uma confirmação do gateway de pagamento e aí sim disparar esse bebezinho, vou ver com calma depois
     @Transactional
     public void comprar(Long giftId){
         Gift gift = giftRepository.findById(giftId)
                 .orElseThrow(() -> new NotFoundException("Presente não encontrado"));
-
-        // expirarSeNecessario(gift);
 
         if (gift.getStatus() != GiftStatus.RESERVADO) {
             throw new IllegalStateException("Presente já reservado/comprado");
@@ -95,7 +86,7 @@ public class GiftService {
     }
 
     @Transactional
-    @Scheduled(fixedRate = 60000) // 1 minuto
+    @Scheduled(fixedRate = 60000) // 1 minute
     public void limparReservasExpiradas(){
         LocalDateTime now = LocalDateTime.now();
 
@@ -112,17 +103,4 @@ public class GiftService {
             gift.setReservadoAte(null);
         }
     }
-
-    /* 
-    private void expirarSeNecessario(Gift gift) {
-        if (gift.getStatus() == GiftStatus.RESERVADO
-            && gift.getReservadoAte() != null
-            && gift.getReservadoAte().isBefore(LocalDateTime.now())) {
-            gift.setStatus(GiftStatus.DISPONIVEL);
-            gift.setReservadoPor(null);
-            gift.setReservadoEm(null);
-            gift.setReservadoAte(null);
-        }
-    }
-    */
 }
