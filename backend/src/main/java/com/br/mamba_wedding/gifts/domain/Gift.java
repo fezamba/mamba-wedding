@@ -49,7 +49,10 @@ public class Gift {
 
 	private LocalDateTime reservadoEm;
 
-	private LocalDateTime compradoEm;
-
 	private LocalDateTime reservadoAte;
+	
+	@Column(length = 120)
+	private String compradoPor;
+
+	private LocalDateTime compradoEm;
 }

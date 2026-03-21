@@ -51,8 +51,8 @@ public class GiftController {
     }
 
     @PostMapping("/{id}/buy")
-    public ResponseEntity<Void> buyGift(@PathVariable Long id){
-        giftService.comprar(id);
+    public ResponseEntity<Void> buyGift(@PathVariable Long id, @AuthenticationPrincipal Guest loggedGuest){
+        giftService.comprar(id, loggedGuest.getNomeCompleto());
         return ResponseEntity.noContent().build();
     }
 }

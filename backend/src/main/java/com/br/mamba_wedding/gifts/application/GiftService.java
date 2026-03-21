@@ -11,6 +11,7 @@ import com.br.mamba_wedding.common.exception.NotFoundException;
 import com.br.mamba_wedding.gifts.domain.Gift;
 import com.br.mamba_wedding.gifts.domain.GiftStatus;
 import com.br.mamba_wedding.gifts.infrastructure.GiftRepository;
+import com.br.mamba_wedding.payment.application.PaymentGateway;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,11 +19,13 @@ import java.util.List;
 @Service
 public class GiftService {
     private final GiftRepository giftRepository;
+    private final PaymentGateway paymentGateway;
 
     private static final Logger log = LoggerFactory.getLogger(GiftService.class);
 
-    public GiftService(GiftRepository giftRepository) {
+    public GiftService(GiftRepository giftRepository, PaymentGateway paymentGateway) {
         this.giftRepository = giftRepository;
+        this.paymentGateway = paymentGateway;
     }
 
     public List<Gift> listAll() {
@@ -72,16 +75,23 @@ public class GiftService {
     }
 
     @Transactional
-    public void comprar(Long giftId){
+    public void comprar(Long giftId, String guestName){
         Gift gift = giftRepository.findById(giftId)
                 .orElseThrow(() -> new NotFoundException("Presente não encontrado"));
 
-        if (gift.getStatus() != GiftStatus.RESERVADO) {
-            throw new IllegalStateException("Presente já reservado/comprado");
+        if (gift.getStatus() != GiftStatus.COMPRADO) {
+            throw new IllegalStateException("Presente já foi comprado");
         }
 
+        paymentGateway.processPayment(gift, guestName);
+
+        // Without exceptions -> Payment discharged
         gift.setStatus(GiftStatus.COMPRADO);
-        gift.setCompradoEm(LocalDateTime.now());
+        gift.setCompradoPor(guestName);
+
+        gift.setReservadoPor(null);
+        gift.setReservadoEm(null);
+
         giftRepository.save(gift);
     }
 
