@@ -1,4 +1,4 @@
-# Mamba Wedding
+# Mamba Wedding (in development)
 
 This project is a comprehensive web application for wedding management, comprising a public-facing website for guests and an administrative dashboard for the couple.
 
