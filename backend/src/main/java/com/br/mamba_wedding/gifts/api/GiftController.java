@@ -2,15 +2,14 @@ package com.br.mamba_wedding.gifts.api;
 
 import com.br.mamba_wedding.gifts.api.dto.GiftDetail;
 import com.br.mamba_wedding.gifts.api.dto.GiftList;
-import com.br.mamba_wedding.gifts.api.dto.GiftReserveRequest;
 import com.br.mamba_wedding.gifts.application.GiftService;
 import com.br.mamba_wedding.gifts.domain.Gift;
+import com.br.mamba_wedding.guests.domain.Guest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -39,14 +38,15 @@ public class GiftController {
     }
 
     @PostMapping("/{id}/reserve")
-    public ResponseEntity<Void> reserve(@PathVariable Long id, @Valid @RequestBody GiftReserveRequest request) {
-        giftService.reservar(id, request.reservadoPor());
+    public ResponseEntity<Void> reserve(@PathVariable Long id, @AuthenticationPrincipal Guest loggedGuest) {
+        giftService.reservar(id, loggedGuest.getNomeCompleto());
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}/reserve")
-    public ResponseEntity<Void> cancelReserve(@PathVariable Long id){
-        giftService.cancelarReserva(id);
+    public ResponseEntity<Void> cancelReserve(@PathVariable Long id, @AuthenticationPrincipal Guest loggedGuest){
+        
+        giftService.cancelarReserva(id, loggedGuest.getNomeCompleto());
         return ResponseEntity.noContent().build();
     }
 

@@ -57,7 +57,7 @@ public class GiftService {
     }
 
     @Transactional
-    public void cancelarReserva(Long giftId){
+    public void cancelarReserva(Long giftId, String guestName){
         Gift gift = giftRepository.findById(giftId)
                 .orElseThrow(() -> new NotFoundException("Presente não encontrado"));
         
@@ -65,6 +65,10 @@ public class GiftService {
 
         if (gift.getStatus() != GiftStatus.RESERVADO) {
             throw new IllegalStateException("Apenas presentes reservados podem ter a reserva cancelada.");
+        }
+
+        if (gift.getReservadoPor() == null || !gift.getReservadoPor().equals(guestName)){
+            throw new IllegalStateException("Você não tem permissão para cancelar uma reserva feita por outra pessoa");
         }
 
         gift.setStatus(GiftStatus.DISPONIVEL);
