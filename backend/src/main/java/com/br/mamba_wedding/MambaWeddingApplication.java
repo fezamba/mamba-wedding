@@ -10,5 +10,4 @@ public class MambaWeddingApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MambaWeddingApplication.class, args);
 	}
-
 }
