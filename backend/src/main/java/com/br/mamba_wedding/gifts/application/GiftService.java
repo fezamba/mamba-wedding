@@ -79,7 +79,7 @@ public class GiftService {
         Gift gift = giftRepository.findById(giftId)
                 .orElseThrow(() -> new NotFoundException("Presente não encontrado"));
 
-        if (gift.getStatus() != GiftStatus.COMPRADO) {
+        if (gift.getStatus() == GiftStatus.COMPRADO) {
             throw new IllegalStateException("Presente já foi comprado");
         }
 
