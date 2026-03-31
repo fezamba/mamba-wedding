@@ -23,7 +23,6 @@ public class GuestRsvpController {
         return ResponseEntity.ok(guestRsvpService.lookup(request.codigoConvite()));
     }
 
-    // FIXME: I CAN CONFIRM MORE THAN 1 TIME
     @PostMapping("/confirm")
     public ResponseEntity<Void> confirm(@Valid @RequestBody RsvpActionRequest request) {
         guestRsvpService.confirm(
@@ -35,7 +34,6 @@ public class GuestRsvpController {
         return ResponseEntity.noContent().build();
     }
 
-    // FIXME: I CAN DECLINE MORE THAN 1 TIME
     @PostMapping("/decline")
     public ResponseEntity<Void> decline(@Valid @RequestBody RsvpActionRequest request) {
         guestRsvpService.decline(
