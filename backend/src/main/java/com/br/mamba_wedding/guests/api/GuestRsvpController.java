@@ -18,7 +18,7 @@ public class GuestRsvpController {
 
     private final GuestRsvpService guestRsvpService;
 
-    @GetMapping("/lookup")
+    @PostMapping("/lookup")
     public ResponseEntity<RsvpResponse> lookup(@Valid @RequestBody RsvpLookupRequest request) {
         return ResponseEntity.ok(guestRsvpService.lookup(request.codigoConvite()));
     }
