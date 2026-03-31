@@ -19,7 +19,7 @@ public class GuestRsvpController {
     private final GuestRsvpService guestRsvpService;
 
     // FIXME: LOOKUP MUST BE GET
-    @PostMapping("/lookup")
+    @GetMapping("/lookup")
     public ResponseEntity<RsvpResponse> lookup(@Valid @RequestBody RsvpLookupRequest request) {
         return ResponseEntity.ok(guestRsvpService.lookup(request.codigoConvite()));
     }
