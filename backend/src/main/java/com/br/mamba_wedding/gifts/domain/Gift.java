@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "gifts", indexes = {
 		@Index(name = "idx_gifts_status", columnList = "status")
 })
+// TODO: Implementar sistema de cotas nos presentes
 public class Gift {
 
 	@Id
