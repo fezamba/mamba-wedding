@@ -2,17 +2,18 @@ package com.br.mamba_wedding.gifts.api;
 
 import com.br.mamba_wedding.gifts.api.dto.GiftDetail;
 import com.br.mamba_wedding.gifts.api.dto.GiftList;
+import com.br.mamba_wedding.gifts.api.dto.ReserveRequest;
 import com.br.mamba_wedding.gifts.application.GiftService;
 import com.br.mamba_wedding.gifts.domain.Gift;
 import com.br.mamba_wedding.guests.domain.Guest;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/api/gifts")
@@ -38,8 +39,8 @@ public class GiftController {
     }
 
     @PostMapping("/{id}/reserve")
-    public ResponseEntity<Void> reserve(@PathVariable Long id, @AuthenticationPrincipal Guest loggedGuest) {
-        giftService.reservar(id, loggedGuest.getNomeCompleto());
+    public ResponseEntity<Void> reserve(@PathVariable Long id, @AuthenticationPrincipal Guest loggedGuest, @Valid @RequestBody ReserveRequest request) {
+        giftService.reservar(id, loggedGuest.getNomeCompleto(), request.cotas());
         return ResponseEntity.noContent().build();
     }
 

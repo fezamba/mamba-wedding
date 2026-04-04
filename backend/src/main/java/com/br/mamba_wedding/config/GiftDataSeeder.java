@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import com.br.mamba_wedding.gifts.domain.Gift;
-import com.br.mamba_wedding.gifts.domain.GiftStatus;
 import com.br.mamba_wedding.gifts.infrastructure.GiftRepository;
 
 @Component
@@ -32,7 +31,7 @@ public class GiftDataSeeder implements CommandLineRunner {
             .valor(new BigDecimal(("2500.00")))
             .imagemUrl("url-geladeira")
             .linkCompra("urlcompra-geladeira")
-            .status(GiftStatus.DISPONIVEL)
+            .cotasTotais(2)
             .build();
         
         Gift gift2 = Gift.builder()
@@ -41,7 +40,7 @@ public class GiftDataSeeder implements CommandLineRunner {
             .valor(new BigDecimal("3200.00"))
             .imagemUrl("url-sofa")
             .linkCompra("urlcompra-sofa")
-            .status(GiftStatus.DISPONIVEL)
+            .cotasTotais(3)
             .build();
 
         Gift gift3 = Gift.builder()
@@ -50,7 +49,7 @@ public class GiftDataSeeder implements CommandLineRunner {
             .valor(new BigDecimal("3800.00"))
             .imagemUrl("url-tv")
             .linkCompra("urlcompra-tv")
-            .status(GiftStatus.DISPONIVEL)
+            .cotasTotais(1)
             .build();
         
         giftRepository.save(gift1);

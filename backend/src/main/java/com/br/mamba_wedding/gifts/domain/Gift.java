@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @Table(name = "gifts", indexes = {
 		@Index(name = "idx_gifts_status", columnList = "status")
 })
-// TODO: Implementar sistema de cotas nos presentes
+
 public class Gift {
 
 	@Id
@@ -34,6 +35,9 @@ public class Gift {
 	@Column(nullable = false, precision = 10, scale = 2)
 	private BigDecimal valor;
 
+	@Column(nullable = false)
+    private Integer cotasTotais;
+
 	@Column(length = 255)
 	private String imagemUrl;
 
@@ -41,19 +45,19 @@ public class Gift {
 	@Column(length = 255)
 	private String linkCompra;
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, length = 16)
-	private GiftStatus status;
+	@OneToMany(mappedBy = "gift", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<GiftTransaction> transacoes = new ArrayList<>();
 
-	@Column(length = 120)
-	private String reservadoPor;
+	public boolean isEsgotado() {
+			return getCotasDisponiveis() <= 0;
+		}
 
-	private LocalDateTime reservadoEm;
-
-	private LocalDateTime reservadoAte;
-	
-	@Column(length = 120)
-	private String compradoPor;
-
-	private LocalDateTime compradoEm;
+	public Integer getCotasDisponiveis() {
+			int cotasOcupadas = transacoes.stream()
+				.filter(t -> t.getStatus() != TransactionStatus.CANCELADO)
+				.mapToInt(GiftTransaction::getQuantidadeCotas)
+				.sum();
+			return cotasTotais - cotasOcupadas;
+		}
 }

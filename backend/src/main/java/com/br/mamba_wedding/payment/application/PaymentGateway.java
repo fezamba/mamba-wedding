@@ -1,7 +1,9 @@
 package com.br.mamba_wedding.payment.application;
 
-import com.br.mamba_wedding.gifts.domain.Gift;
+import java.math.BigDecimal;
+
+import com.br.mamba_wedding.gifts.domain.GiftTransaction;
 
 public interface PaymentGateway {
-    void processPayment(Gift gift, String guestName);
+    void processPayment(GiftTransaction transacao, BigDecimal valorAPagar);
 }
