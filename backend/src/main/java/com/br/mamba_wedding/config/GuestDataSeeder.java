@@ -29,6 +29,8 @@ public class GuestDataSeeder implements CommandLineRunner {
             .rsvpCode("FABI123")
             .rsvpStatus(GuestStatus.PENDING)
             .side(GuestSide.BRIDE)
+            .email("fabiana.maia@gmail.com")
+            .phone("21999999999")
             .build();
 
         Guest g2 = Guest.builder()
@@ -36,6 +38,8 @@ public class GuestDataSeeder implements CommandLineRunner {
             .rsvpCode("CECI123")
             .rsvpStatus(GuestStatus.PENDING)
             .side(GuestSide.GROOM)
+            .email("cecile.azambuja@gmail.com")
+            .phone("21999999999")
             .build();
 
         Guest g3 = Guest.builder()
@@ -43,6 +47,8 @@ public class GuestDataSeeder implements CommandLineRunner {
             .rsvpCode("ELIA123")
             .rsvpStatus(GuestStatus.PENDING)
             .side(GuestSide.GROOM)
+            .email("eliane.azambuja@gmail.com")
+            .phone("21999999999")
             .build();
 
         guestRepository.save(g1);
