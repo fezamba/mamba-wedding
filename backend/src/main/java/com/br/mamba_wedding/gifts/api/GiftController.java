@@ -34,26 +34,26 @@ public class GiftController {
 
     @GetMapping("/{id}")
     public ResponseEntity<GiftDetail> detailGift(@PathVariable Long id){
-        Gift response = giftService.buscarPorId(id);
+        Gift response = giftService.findById(id);
         return ResponseEntity.ok(GiftDetail.from(response));
     }
 
     @PostMapping("/{id}/reserve")
     public ResponseEntity<Void> reserve(@PathVariable Long id, @AuthenticationPrincipal Guest loggedGuest, @Valid @RequestBody ReserveRequest request) {
-        giftService.reservar(id, loggedGuest.getNomeCompleto(), request.cotas());
+        giftService.reserve(id, loggedGuest.getFullName(), request.quotas());
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}/reserve")
     public ResponseEntity<Void> cancelReserve(@PathVariable Long id, @AuthenticationPrincipal Guest loggedGuest){
         
-        giftService.cancelarReserva(id, loggedGuest.getNomeCompleto());
+        giftService.cancelReserve(id, loggedGuest.getFullName());
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{id}/buy")
     public ResponseEntity<Void> buyGift(@PathVariable Long id, @AuthenticationPrincipal Guest loggedGuest){
-        giftService.comprar(id, loggedGuest.getNomeCompleto());
+        giftService.buy(id, loggedGuest.getFullName());
         return ResponseEntity.noContent().build();
     }
 }

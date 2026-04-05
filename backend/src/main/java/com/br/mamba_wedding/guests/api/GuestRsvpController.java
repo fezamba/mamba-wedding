@@ -20,16 +20,16 @@ public class GuestRsvpController {
 
     @PostMapping("/lookup")
     public ResponseEntity<RsvpResponse> lookup(@Valid @RequestBody RsvpLookupRequest request) {
-        return ResponseEntity.ok(guestRsvpService.lookup(request.codigoConvite()));
+        return ResponseEntity.ok(guestRsvpService.lookup(request.rsvpCode()));
     }
 
     @PostMapping("/confirm")
     public ResponseEntity<Void> confirm(@Valid @RequestBody RsvpActionRequest request) {
         guestRsvpService.confirm(
-                request.codigoConvite(),
+                request.rsvpCode(),
                 request.email(),
-                request.telefone(),
-                request.observacoes()
+                request.phone(),
+                request.notes()
         );
         return ResponseEntity.noContent().build();
     }
@@ -37,10 +37,10 @@ public class GuestRsvpController {
     @PostMapping("/decline")
     public ResponseEntity<Void> decline(@Valid @RequestBody RsvpActionRequest request) {
         guestRsvpService.decline(
-                request.codigoConvite(),
+                request.rsvpCode(),
                 request.email(),
-                request.telefone(),
-                request.observacoes()
+                request.phone(),
+                request.notes()
         );
         return ResponseEntity.noContent().build();
     }

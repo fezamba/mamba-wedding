@@ -5,5 +5,5 @@ import java.math.BigDecimal;
 import com.br.mamba_wedding.gifts.domain.GiftTransaction;
 
 public interface PaymentGateway {
-    void processPayment(GiftTransaction transacao, BigDecimal valorAPagar);
+    void processPayment(GiftTransaction transaction, BigDecimal valueToPay);
 }

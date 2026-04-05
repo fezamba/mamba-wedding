@@ -25,24 +25,24 @@ public class GuestDataSeeder implements CommandLineRunner {
         }
 
         Guest g1 = Guest.builder()
-            .nomeCompleto("Fabiana Maia")
-            .codigoConvite("FABI123")
-            .statusConvite(GuestStatus.PENDENTE)
-            .lado(GuestSide.NOIVA)
+            .fullName("Fabiana Maia")
+            .rsvpCode("FABI123")
+            .rsvpStatus(GuestStatus.PENDING)
+            .side(GuestSide.BRIDE)
             .build();
 
         Guest g2 = Guest.builder()
-            .nomeCompleto("Cecile Azambuja")
-            .codigoConvite("CECI123")
-            .statusConvite(GuestStatus.PENDENTE)
-            .lado(GuestSide.NOIVO)
+            .fullName("Cecile Azambuja")
+            .rsvpCode("CECI123")
+            .rsvpStatus(GuestStatus.PENDING)
+            .side(GuestSide.GROOM)
             .build();
 
         Guest g3 = Guest.builder()
-            .nomeCompleto("Eliane Azambuja")
-            .codigoConvite("ELIA123")
-            .statusConvite(GuestStatus.PENDENTE)
-            .lado(GuestSide.NOIVO)
+            .fullName("Eliane Azambuja")
+            .rsvpCode("ELIA123")
+            .rsvpStatus(GuestStatus.PENDING)
+            .side(GuestSide.GROOM)
             .build();
 
         guestRepository.save(g1);
@@ -50,6 +50,5 @@ public class GuestDataSeeder implements CommandLineRunner {
         guestRepository.save(g3);
 
         System.out.println(">>> Convidados teste inseridos com sucesso");
-
     }
 }

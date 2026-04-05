@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Table(name = "guests", indexes = {
-        @Index(name = "idx_guests_codigo_convite", columnList = "codigoConvite", unique = true)
+        @Index(name = "idx_guests_rsvp_code", columnList = "rsvpCode", unique = true)
 })
 public class Guest {
 
@@ -21,27 +21,27 @@ public class Guest {
     private Long id;
 
     @Column(nullable = false)
-    private String nomeCompleto;
+    private String fullName;
 
     @Column(nullable = false, unique = true, length = 32)
-    private String codigoConvite;
+    private String rsvpCode;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 16)
-    private GuestStatus statusConvite;
+    private GuestStatus rsvpStatus;
 
-    private LocalDateTime rsvpEm;
+    private LocalDateTime rsvpBy;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
-    private GuestSide lado;
+    private GuestSide side;
 
     @Column(nullable = false, length = 120)
     private String email;
 
     @Column(nullable = false, length = 30)
-    private String telefone;
+    private String phone;
 
     @Column(length = 255)
-    private String observacoes;
+    private String notes;
 }

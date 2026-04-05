@@ -20,19 +20,19 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    public record MessageRequest(String texto) {}
+    public record MessageRequest(String text) {}
 
     @GetMapping
-    public ResponseEntity<List<Message>> listar() {
-        return ResponseEntity.ok(messageService.listarRecados());
+    public ResponseEntity<List<Message>> list() {
+        return ResponseEntity.ok(messageService.listMessages());
     }
 
     @PostMapping
-    public ResponseEntity<Message> criar(
+    public ResponseEntity<Message> create(
             @RequestBody MessageRequest request,
-            @AuthenticationPrincipal Guest guestLogado 
+            @AuthenticationPrincipal Guest loggedGuest 
     ) {
-        Message mensagemSalva = messageService.deixarRecado(guestLogado.getNomeCompleto(), request.texto());
-        return ResponseEntity.ok(mensagemSalva);
+        Message savedMessage = messageService.leaveMessage(loggedGuest.getFullName(), request.text());
+        return ResponseEntity.ok(savedMessage);
     }
 }

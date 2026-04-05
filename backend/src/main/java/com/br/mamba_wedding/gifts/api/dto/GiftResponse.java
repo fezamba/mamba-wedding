@@ -6,30 +6,30 @@ import java.math.RoundingMode;
 
 public record GiftResponse(
         Long id,
-        String nome,
-        String descricao,
-        BigDecimal valorTotal,
-        BigDecimal valorCota,
-        Integer cotasTotais,
-        Integer cotasDisponiveis,
-        String imagemUrl,
-        String linkCompra,
-        boolean esgotado
+        String name,
+        String description,
+        BigDecimal totalValue,
+        BigDecimal quotaValue,
+        Integer totalQuotas,
+        Integer availableQuotas,
+        String imageUrl,
+        String purchaseLink,
+        boolean soldOut
 ) {
     public static GiftResponse from(Gift gift) {
-        BigDecimal valorCota = gift.getValor().divide(new BigDecimal(gift.getCotasTotais()), 2, RoundingMode.HALF_UP);
+        BigDecimal quotaValue = gift.getValue().divide(new BigDecimal(gift.getTotalQuotas()), 2, RoundingMode.HALF_UP);
         
         return new GiftResponse(
                 gift.getId(),
-                gift.getNome(),
-                gift.getDescricao(),
-                gift.getValor(),
-                valorCota,
-                gift.getCotasTotais(),
-                gift.getCotasDisponiveis(),
-                gift.getImagemUrl(),
-                gift.getLinkCompra(),
-                gift.isEsgotado()
+                gift.getName(),
+                gift.getDescription(),
+                gift.getValue(),
+                quotaValue,
+                gift.getTotalQuotas(),
+                gift.getAvailableQuotas(),
+                gift.getImageUrl(),
+                gift.getPurchaseLink(),
+                gift.isSoldOut()
         );
     }
 }

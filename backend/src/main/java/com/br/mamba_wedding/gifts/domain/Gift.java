@@ -13,9 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "gifts", indexes = {
-		@Index(name = "idx_gifts_status", columnList = "status")
-})
+@Table(name = "gifts")
 
 public class Gift {
 
@@ -27,37 +25,37 @@ public class Gift {
     private Long version;
 
 	@Column(nullable = false, length = 120)
-	private String nome;
+	private String name;
 
 	@Column(length = 500)
-	private String descricao;
+	private String description;
 
 	@Column(nullable = false, precision = 10, scale = 2)
-	private BigDecimal valor;
+	private BigDecimal value;
 
 	@Column(nullable = false)
-    private Integer cotasTotais;
+    private Integer totalQuotas;
 
 	@Column(length = 255)
-	private String imagemUrl;
+	private String imageUrl;
 
     // Seria um link para pagar no mercado pago, paypal, etc.
 	@Column(length = 255)
-	private String linkCompra;
+	private String purchaseLink;
 
 	@OneToMany(mappedBy = "gift", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private List<GiftTransaction> transacoes = new ArrayList<>();
+    private List<GiftTransaction> transactions = new ArrayList<>();
 
-	public boolean isEsgotado() {
-			return getCotasDisponiveis() <= 0;
+	public boolean isSoldOut() {
+			return getAvailableQuotas() <= 0;
 		}
 
-	public Integer getCotasDisponiveis() {
-			int cotasOcupadas = transacoes.stream()
-				.filter(t -> t.getStatus() != TransactionStatus.CANCELADO)
-				.mapToInt(GiftTransaction::getQuantidadeCotas)
+	public Integer getAvailableQuotas() {
+			int filledQuotas = transactions.stream()
+				.filter(t -> t.getStatus() != TransactionStatus.CANCELED)
+				.mapToInt(GiftTransaction::getNumberQuotas)
 				.sum();
-			return cotasTotais - cotasOcupadas;
+			return totalQuotas - filledQuotas;
 		}
 }

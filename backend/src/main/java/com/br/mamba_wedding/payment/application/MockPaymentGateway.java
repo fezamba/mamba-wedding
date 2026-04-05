@@ -14,13 +14,13 @@ public class MockPaymentGateway implements PaymentGateway {
     private static final Logger log = LoggerFactory.getLogger(MockPaymentGateway.class);
 
     @Override
-    public void processPayment(GiftTransaction transacao, BigDecimal valorAPagar) {
+    public void processPayment(GiftTransaction transaction, BigDecimal valueToPay) {
         log.info("Inicializando Mock");
-        log.info("Convidado: {}", transacao.getGuestName());
+        log.info("Convidado: {}", transaction.getGuestName());
         log.info("Presente: {} | Cotas: {} | Valor total: R$ {}", 
-            transacao.getGift().getNome(), 
-            transacao.getQuantidadeCotas(), 
-            valorAPagar);
+            transaction.getGift().getName(), 
+            transaction.getNumberQuotas(), 
+            valueToPay);
 
         try {
             // Simulando latência de requisição HTTP (1.5 segundos)

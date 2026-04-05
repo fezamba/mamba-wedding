@@ -15,15 +15,15 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
 
-    public Message deixarRecado(String autor, String texto) {
-        if (texto == null || texto.trim().isEmpty()) {
+    public Message leaveMessage(String author, String text) {
+        if (text == null || text.trim().isEmpty()) {
             throw new IllegalArgumentException("A mensagem não pode estar vazia.");
         }
-        Message novaMensagem = new Message(autor, texto);
-        return messageRepository.save(novaMensagem);
+        Message newMessage = new Message(author, text);
+        return messageRepository.save(newMessage);
     }
 
-    public List<Message> listarRecados() {
-        return messageRepository.findAllByOrderByDataEnvioDesc();
+    public List<Message> listMessages() {
+        return messageRepository.findAllByOrderBySendDateDesc();
     }
 }

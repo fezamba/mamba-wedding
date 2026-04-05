@@ -1,6 +1,5 @@
 package com.br.mamba_wedding.config;
 
-
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
@@ -24,39 +23,38 @@ public class GiftDataSeeder implements CommandLineRunner {
         if (giftRepository.count() != 0) {
             return;
         }
-        
+
         Gift gift1 = Gift.builder()
-            .nome("Geladeira")
-            .descricao("Geladeira cinza")
-            .valor(new BigDecimal(("2500.00")))
-            .imagemUrl("url-geladeira")
-            .linkCompra("urlcompra-geladeira")
-            .cotasTotais(2)
+            .name("Geladeira")
+            .description("Geladeira cinza")
+            .value(new BigDecimal("2500.00"))
+            .imageUrl("url-geladeira")
+            .purchaseLink("urlcompra-geladeira")
+            .totalQuotas(2)
             .build();
-        
+
         Gift gift2 = Gift.builder()
-            .nome("Sofá 3 Lugares")
-            .descricao("Sofá retrátil e reclinável, cor bege")
-            .valor(new BigDecimal("3200.00"))
-            .imagemUrl("url-sofa")
-            .linkCompra("urlcompra-sofa")
-            .cotasTotais(3)
+            .name("Sofá 3 Lugares")
+            .description("Sofá retrátil e reclinável, cor bege")
+            .value(new BigDecimal("3200.00"))
+            .imageUrl("url-sofa")
+            .purchaseLink("urlcompra-sofa")
+            .totalQuotas(3)
             .build();
 
         Gift gift3 = Gift.builder()
-            .nome("Televisão 55\" 4K")
-            .descricao("Smart TV 55 polegadas UHD")
-            .valor(new BigDecimal("3800.00"))
-            .imagemUrl("url-tv")
-            .linkCompra("urlcompra-tv")
-            .cotasTotais(1)
+            .name("Televisão 55\" 4K")
+            .description("Smart TV 55 polegadas UHD")
+            .value(new BigDecimal("3800.00"))
+            .imageUrl("url-tv")
+            .purchaseLink("urlcompra-tv")
+            .totalQuotas(1)
             .build();
-        
+
         giftRepository.save(gift1);
         giftRepository.save(gift2);
         giftRepository.save(gift3);
 
         System.out.println(">>> Presentes de teste inseridos com sucesso");
-
     }
 }

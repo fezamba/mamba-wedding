@@ -25,13 +25,13 @@ public class GiftTransaction {
     private String guestName;
 
     @Column(nullable = false)
-    private Integer quantidadeCotas;
+    private Integer numberQuotas;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 16)
     private TransactionStatus status;
 
-    private LocalDateTime reservadoEm;
-    private LocalDateTime reservadoAte;
-    private LocalDateTime compradoEm;
+    private LocalDateTime reservedAt;
+    private LocalDateTime reservedUntil;
+    private LocalDateTime purchasedAt;
 }

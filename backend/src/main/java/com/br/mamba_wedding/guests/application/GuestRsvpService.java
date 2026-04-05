@@ -18,46 +18,46 @@ public class GuestRsvpService {
     private final GuestRepository guestRepository;
 
     @Transactional(readOnly = true)
-    public RsvpResponse lookup(String codigoConvite) {
-        Guest guest = guestRepository.findByCodigoConvite(codigoConvite)
+    public RsvpResponse lookup(String rsvpCode) {
+        Guest guest = guestRepository.findByRsvpCode(rsvpCode)
                 .orElseThrow(GuestNotFoundException::new);
 
         return new RsvpResponse(
-                guest.getNomeCompleto(),
-                guest.getCodigoConvite(),
-                guest.getStatusConvite(),
+                guest.getFullName(),
+                guest.getRsvpCode(),
+                guest.getRsvpStatus(),
                 guest.getEmail(),
-                guest.getTelefone(),
-                guest.getObservacoes()
+                guest.getPhone(),
+                guest.getNotes()
         );
     }
 
     @Transactional
-    public void confirm(String codigoConvite, String email, String telefone, String observacoes) {
-        Guest guest = guestRepository.findByCodigoConvite(codigoConvite)
+    public void confirm(String rsvpCode, String email, String phone, String notes) {
+        Guest guest = guestRepository.findByRsvpCode(rsvpCode)
                 .orElseThrow(GuestNotFoundException::new);
 
-        guest.setStatusConvite(GuestStatus.CONFIRMADO);
-        guest.setRsvpEm(LocalDateTime.now());
+        guest.setRsvpStatus(GuestStatus.CONFIRMED);
+        guest.setRsvpBy(LocalDateTime.now());
         
         guest.setEmail(email != null && email.trim().isEmpty() ? null : email);
-        guest.setTelefone(telefone != null && telefone.trim().isEmpty() ? null : telefone);
-        guest.setObservacoes(observacoes != null && observacoes.trim().isEmpty() ? null : observacoes);
+        guest.setPhone(phone != null && phone.trim().isEmpty() ? null : phone);
+        guest.setNotes(notes != null && notes.trim().isEmpty() ? null : notes);
 
         guestRepository.save(guest);
     }
 
     @Transactional
-    public void decline(String codigoConvite, String email, String telefone, String observacoes) {
-        Guest guest = guestRepository.findByCodigoConvite(codigoConvite)
+    public void decline(String rsvpCode, String email, String phone, String notes) {
+        Guest guest = guestRepository.findByRsvpCode(rsvpCode)
                 .orElseThrow(GuestNotFoundException::new);
 
-        guest.setStatusConvite(GuestStatus.RECUSADO);
-        guest.setRsvpEm(LocalDateTime.now());
+        guest.setRsvpStatus(GuestStatus.REJECTED);
+        guest.setRsvpBy(LocalDateTime.now());
 
         guest.setEmail(email != null && email.trim().isEmpty() ? null : email);
-        guest.setTelefone(telefone != null && telefone.trim().isEmpty() ? null : telefone);
-        guest.setObservacoes(observacoes != null && observacoes.trim().isEmpty() ? null : observacoes);
+        guest.setPhone(phone != null && phone.trim().isEmpty() ? null : phone);
+        guest.setNotes(notes != null && notes.trim().isEmpty() ? null : notes);
 
         guestRepository.save(guest);
     }

@@ -40,88 +40,88 @@ public class GiftService {
         return gifts;
     }
 
-    public Gift buscarPorId(Long giftId){
+    public Gift findById(Long giftId){
         Gift gift = giftRepository.findById(giftId)
             .orElseThrow(() -> new NotFoundException("Presente não encontrado"));;
         return gift;
     }
 
     @Transactional
-    public void reservar(Long giftId, String reservadoPor, int cotas){
+    public void reserve(Long giftId, String reservedBy, int quotas){
         Gift gift = giftRepository.findById(giftId)
                 .orElseThrow(() -> new NotFoundException("Presente não encontrado"));
 
-        if (cotas > gift.getCotasDisponiveis()){
+        if (quotas > gift.getAvailableQuotas()){
             throw new IllegalStateException(
-                "Quantidade indisponível. Restam apenas " + gift.getCotasDisponiveis() + " cotas para esse presente."
+                "Quantidade indisponível. Restam apenas " + gift.getAvailableQuotas() + " cotas para esse presente."
             );
         }
 
-        GiftTransaction transacao = GiftTransaction.builder()
+        GiftTransaction transaction = GiftTransaction.builder()
             .gift(gift)
-            .guestName(reservadoPor)
-            .quantidadeCotas(cotas)
-            .status(TransactionStatus.RESERVADO)
-            .reservadoEm(LocalDateTime.now())
-            .reservadoAte(LocalDateTime.now().plusHours(6))
+            .guestName(reservedBy)
+            .numberQuotas(quotas)
+            .status(TransactionStatus.RESERVED)
+            .reservedAt(LocalDateTime.now())
+            .reservedUntil(LocalDateTime.now().plusHours(6))
             .build();
 
-        gift.getTransacoes().add(transacao);
+        gift.getTransactions().add(transaction);
         giftRepository.save(gift);
     }
 
     @Transactional
-    public void cancelarReserva(Long giftId, String guestName){
+    public void cancelReserve(Long giftId, String guestName){
         Gift gift = giftRepository.findById(giftId)
                 .orElseThrow(() -> new NotFoundException("Presente não encontrado"));
         
-        GiftTransaction transacao = gift.getTransacoes().stream()
-            .filter(t -> t.getGuestName().equals(guestName) && t.getStatus() == TransactionStatus.RESERVADO)
+        GiftTransaction transaction = gift.getTransactions().stream()
+            .filter(t -> t.getGuestName().equals(guestName) && t.getStatus() == TransactionStatus.RESERVED)
             .findFirst()
             .orElseThrow(() -> new IllegalStateException("Você não possui uma reserva ativa deste presente para cancelar."));
 
-            transacao.setStatus(TransactionStatus.CANCELADO);
+            transaction.setStatus(TransactionStatus.CANCELED);
             giftRepository.save(gift);
         }
 
     @Transactional
-    public void comprar(Long giftId, String guestName){
+    public void buy(Long giftId, String guestName){
         Gift gift = giftRepository.findById(giftId)
                 .orElseThrow(() -> new NotFoundException("Presente não encontrado"));
 
-        GiftTransaction transacao = gift.getTransacoes().stream()
-            .filter(t -> t.getGuestName().equals(guestName) && t.getStatus() == TransactionStatus.RESERVADO)
+        GiftTransaction transaction = gift.getTransactions().stream()
+            .filter(t -> t.getGuestName().equals(guestName) && t.getStatus() == TransactionStatus.RESERVED)
             .findFirst()
             .orElseThrow(() -> new IllegalStateException("Nenhuma reserva encontrada. Por favor, reserve as cotas antes de pagar."));
 
-        BigDecimal valorCota = gift.getValor().divide(new BigDecimal(gift.getCotasTotais()), 2, RoundingMode.HALF_UP);
-        BigDecimal valorAPagar = valorCota.multiply(new BigDecimal(transacao.getQuantidadeCotas()));
+        BigDecimal quotaValue = gift.getValue().divide(new BigDecimal(gift.getTotalQuotas()), 2, RoundingMode.HALF_UP);
+        BigDecimal valueToPay = quotaValue.multiply(new BigDecimal(transaction.getNumberQuotas()));
 
-        paymentGateway.processPayment(transacao, valorAPagar);
+        paymentGateway.processPayment(transaction, valueToPay);
 
         // Sem exceções --> Pagamento feito
-        transacao.setStatus(TransactionStatus.COMPRADO);
-        transacao.setCompradoEm(LocalDateTime.now());
+        transaction.setStatus(TransactionStatus.PURCHASED);
+        transaction.setPurchasedAt(LocalDateTime.now());
 
-        transacao.setReservadoAte(null);
+        transaction.setReservedUntil(null);
         giftRepository.save(gift);
     }
 
     @Transactional
-    @Scheduled(fixedRate = 60000) // 1 minute
-    public void limparReservasExpiradas(){
-        LocalDateTime agora = LocalDateTime.now();
+    @Scheduled(fixedRate = 60000) // 1 minuto
+    public void clearExpiredReservations(){
+        LocalDateTime now = LocalDateTime.now();
 
-        List<GiftTransaction> expiradas = giftTransactionRepository.findByStatusAndReservadoAteBefore(TransactionStatus.RESERVADO, agora);
+        List<GiftTransaction> expired = giftTransactionRepository.findByStatusAndReservedUntilBefore(TransactionStatus.RESERVED, now);
 
-        if (!expiradas.isEmpty()){
-            log.info("Foram encontradas {} transações com reservas expiradas. Cancelando reservas...", expiradas.size());
+        if (!expired.isEmpty()){
+            log.info("Foram encontradas {} transações com reservas expiradas. Cancelando reservas...", expired.size());
         }
 
-        for (GiftTransaction transacao : expiradas){
-            transacao.setStatus(TransactionStatus.CANCELADO);
+        for (GiftTransaction transaction : expired){
+            transaction.setStatus(TransactionStatus.CANCELED);
         }
 
-        giftTransactionRepository.saveAll(expiradas);
+        giftTransactionRepository.saveAll(expired);
     }
 }

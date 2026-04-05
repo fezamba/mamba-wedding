@@ -11,23 +11,23 @@ public class Message {
     @Id
     private String id;
     
-    private String autor;
-    private String texto;
-    private LocalDateTime dataEnvio;
+    private String author;
+    private String text;
+    private LocalDateTime sendDate;
 
     public Message() {}
 
-    public Message(String autor, String texto) {
-        this.autor = autor;
-        this.texto = texto;
-        this.dataEnvio = LocalDateTime.now();
+    public Message(String author, String text) {
+        this.author = author;
+        this.text = text;
+        this.sendDate = LocalDateTime.now();
     }
 
     public String getId() { return id; }
-    public String getAutor() { return autor; }
-    public void setAutor(String autor) { this.autor = autor; }
-    public String getTexto() { return texto; }
-    public void setTexto(String texto) { this.texto = texto; }
-    public LocalDateTime getDataEnvio() { return dataEnvio; }
-    public void setDataEnvio(LocalDateTime dataEnvio) { this.dataEnvio = dataEnvio; }
+    public String getAuthor() { return author; }
+    public void setAuthor(String author) { this.author = author; }
+    public String getText() { return text; }
+    public void setText(String text) { this.text = text; }
+    public LocalDateTime getSendDate() { return sendDate; }
+    public void setSendDate(LocalDateTime sendDate) { this.sendDate = sendDate; }
 }

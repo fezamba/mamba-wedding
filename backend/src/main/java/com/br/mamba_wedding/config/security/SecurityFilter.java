@@ -42,7 +42,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                 Object principal = null;
 
                 if ("ROLE_GUEST".equals(roleString)) {
-                    Guest guest = guestRepository.findByCodigoConvite(subject)
+                    Guest guest = guestRepository.findByRsvpCode(subject)
                             .orElseThrow(() -> new RuntimeException("Convidado não encontrado"));
                     principal = guest;
                     

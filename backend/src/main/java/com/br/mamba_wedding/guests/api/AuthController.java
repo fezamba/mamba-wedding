@@ -20,15 +20,15 @@ public class AuthController {
         this.tokenService = tokenService;
     }
 
-    public record LoginRequest(String codigoConvite) {}
+    public record LoginRequest(String rsvpCode) {}
     public record LoginResponse(String token) {}
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
-        Guest guest = guestRepository.findByCodigoConvite(request.codigoConvite())
+        Guest guest = guestRepository.findByRsvpCode(request.rsvpCode())
                 .orElseThrow(() -> new GuestNotFoundException());
 
-        String token = tokenService.generateToken(guest.getCodigoConvite(), "ROLE_GUEST");
+        String token = tokenService.generateToken(guest.getRsvpCode(), "ROLE_GUEST");
 
         return ResponseEntity.ok(new LoginResponse(token));
     }

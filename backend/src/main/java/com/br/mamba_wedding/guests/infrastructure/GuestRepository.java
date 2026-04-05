@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface GuestRepository extends JpaRepository<Guest, Long> {
 
-    Optional<Guest> findByCodigoConvite(String codigoConvite);
+    Optional<Guest> findByRsvpCode(String rsvpCode);
 
-    boolean existsByCodigoConvite(String codigoConvite);
+    boolean existsByRsvpCode(String rsvpCode);
 }

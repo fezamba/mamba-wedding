@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface GiftTransactionRepository extends JpaRepository<GiftTransaction, Long> {
     
-    List<GiftTransaction> findByStatusAndReservadoAteBefore(TransactionStatus status, LocalDateTime data);
+    List<GiftTransaction> findByStatusAndReservedUntilBefore(TransactionStatus status, LocalDateTime date);
 }

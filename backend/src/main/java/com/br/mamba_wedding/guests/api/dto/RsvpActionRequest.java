@@ -8,11 +8,11 @@ import jakarta.validation.constraints.Email;
 public record RsvpActionRequest(
     @NotBlank()
     @Size(min = 3, max = 32)
-    String codigoConvite,
+    String rsvpCode,
 
     @NotBlank(message = "Telefone é obrigatório")
     @Pattern(regexp = "^\\d{11}$", message = "Telefone inválido")
-    String telefone,
+    String phone,
 
     @NotBlank(message = "Email é obrigatório")
     @Size(max = 120)
@@ -20,5 +20,5 @@ public record RsvpActionRequest(
     String email,
 
     @Size(max = 255)
-    String observacoes
+    String notes
 ) {}
