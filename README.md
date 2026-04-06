@@ -40,5 +40,5 @@ mamba-wedding/
 
 ### Database
 
-* MySQL 8
-* MongoDB 8
+* PostgreSQL
+* MongoDB
