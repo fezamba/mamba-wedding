@@ -1,0 +1,46 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  profiles:
+    active: dsv
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        "[format_sql]": true
+    open-in-view: false
+  
+  mongodb:
+    uri: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@localhost:27017/${MONGO_DATABASE}?authSource=admin
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    "[org.hibernate.SQL]": DEBUG
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
+api:
+  security:
+    google:
+      client-id: ${GOOGLE_CLIENT_ID}
+    admin:
+      emails: ${ADMIN_EMAILS}
+    token:
+      secret: ${JWT_SECRET}
+      issuer: ${JWT_ISSUER}
+      expiration-hours: 2
