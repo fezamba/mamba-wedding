@@ -1,5 +1,6 @@
 package com.br.mamba_wedding.guests.application;
 
+import com.br.mamba_wedding.common.exception.NotFoundException;
 import com.br.mamba_wedding.guests.api.dto.GuestCreate;
 import com.br.mamba_wedding.guests.api.dto.GuestCreated;
 import com.br.mamba_wedding.guests.api.dto.RsvpResponse;
@@ -81,6 +82,14 @@ public class GuestRsvpService {
         GuestCreated guestCreated = new GuestCreated(savedGuest);
 
         return guestCreated;
+    }
+
+    @Transactional
+    public void delete(Long guestId){
+        Guest guest = guestRepository.findById(guestId)
+                .orElseThrow(() -> new NotFoundException("Convidado não encontrado"));
+        
+        guestRepository.delete(guest);
     }
 
     public String rsvpCodeBuilder(String name){

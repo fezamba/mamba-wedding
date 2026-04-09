@@ -128,6 +128,14 @@ public class GiftService {
     }
 
     @Transactional
+    public void delete(Long giftId){
+        Gift gift = giftRepository.findById(giftId)
+                .orElseThrow(() -> new NotFoundException("Presente não encontrado"));
+        
+        giftRepository.delete(gift);
+    }
+
+    @Transactional
     @Scheduled(fixedRate = 60000) // 1 minuto
     public void clearExpiredReservations(){
         LocalDateTime now = LocalDateTime.now();

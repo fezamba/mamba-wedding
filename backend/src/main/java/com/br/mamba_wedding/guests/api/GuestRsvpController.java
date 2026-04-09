@@ -56,4 +56,11 @@ public class GuestRsvpController {
         GuestCreated response = guestRsvpService.register(guestCreate);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<Void> deleteGuest(@PathVariable Long id){
+        guestRsvpService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

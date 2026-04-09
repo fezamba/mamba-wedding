@@ -67,4 +67,11 @@ public class GiftController {
         GiftCreated response = giftService.register(gift);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<Void> deleteGift(@PathVariable Long id){
+        giftService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
