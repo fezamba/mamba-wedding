@@ -94,7 +94,7 @@ public class GuestRsvpService {
 
     public String rsvpCodeBuilder(String name){
 
-        String initials = name.substring(0, 3).toUpperCase();
+        String initials = name.trim().substring(0, 3).toUpperCase();
         String random4Digit = String.valueOf((int)(Math.random() * (9999 - 1000 + 1) + 1000));
 
         return initials + random4Digit;
