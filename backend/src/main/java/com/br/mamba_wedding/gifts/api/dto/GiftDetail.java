@@ -8,7 +8,7 @@ public record GiftDetail(
         Long id,
         String name,
         String description,
-        BigDecimal totalValue,
+        BigDecimal value,
         BigDecimal quotaValue,
         Integer totalQuotas,
         Integer availableQuotas,

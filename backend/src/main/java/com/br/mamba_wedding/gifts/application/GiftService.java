@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.br.mamba_wedding.common.exception.NotFoundException;
+import com.br.mamba_wedding.gifts.api.dto.GiftCreate;
+import com.br.mamba_wedding.gifts.api.dto.GiftCreated;
 import com.br.mamba_wedding.gifts.domain.Gift;
 import com.br.mamba_wedding.gifts.domain.GiftTransaction;
 import com.br.mamba_wedding.gifts.domain.TransactionStatus;
@@ -105,6 +107,24 @@ public class GiftService {
 
         transaction.setReservedUntil(null);
         giftRepository.save(gift);
+    }
+
+    @Transactional
+    public GiftCreated register(GiftCreate giftCreate){
+
+        Gift gift = Gift.builder()
+            .name(giftCreate.name())
+            .description(giftCreate.description())
+            .value(giftCreate.value())
+            .imageUrl(giftCreate.imageUrl())
+            .purchaseLink(giftCreate.purchaseLink())
+            .totalQuotas(giftCreate.totalQuotas())
+            .build();
+
+        Gift savedGift = giftRepository.save(gift);
+        GiftCreated giftCreated = new GiftCreated(savedGift);
+
+        return giftCreated;
     }
 
     @Transactional

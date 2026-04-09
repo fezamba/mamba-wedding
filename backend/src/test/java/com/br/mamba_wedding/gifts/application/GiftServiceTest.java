@@ -140,4 +140,10 @@ class GiftServiceTest {
         assertEquals(TransactionStatus.CANCELED, expiredTransaction.getStatus());
         verify(giftTransactionRepository, times(1)).saveAll(anyList());
     }
+
+    // TODO: Escrever teste para verificar se apenas ADMINS podem criar presentes
+    @Test
+    void registerAGift_OnlyAdminsAllowed(){
+        
+    }
 }
