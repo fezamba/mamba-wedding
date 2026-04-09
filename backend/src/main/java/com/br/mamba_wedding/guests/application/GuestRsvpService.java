@@ -1,5 +1,7 @@
 package com.br.mamba_wedding.guests.application;
 
+import com.br.mamba_wedding.guests.api.dto.GuestCreate;
+import com.br.mamba_wedding.guests.api.dto.GuestCreated;
 import com.br.mamba_wedding.guests.api.dto.RsvpResponse;
 import com.br.mamba_wedding.guests.domain.Guest;
 import com.br.mamba_wedding.guests.domain.GuestNotFoundException;
@@ -60,5 +62,22 @@ public class GuestRsvpService {
         guest.setNotes(notes != null && notes.trim().isEmpty() ? null : notes);
 
         guestRepository.save(guest);
+    }
+
+    @Transactional
+    public GuestCreated register(GuestCreate guestCreate) {
+        Guest guest = Guest.builder()
+            .fullName(guestCreate.fullName())
+            .rsvpCode(guestCreate.rsvpCode())
+            .rsvpStatus(GuestStatus.PENDING)
+            .side(guestCreate.side())
+            .email(guestCreate.email())
+            .phone(guestCreate.phone())
+            .build();
+        
+        Guest savedGuest = guestRepository.save(guest);
+        GuestCreated guestCreated = new GuestCreated(savedGuest);
+
+        return guestCreated;
     }
 }

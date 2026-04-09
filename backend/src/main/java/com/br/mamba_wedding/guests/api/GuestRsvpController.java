@@ -1,13 +1,18 @@
 package com.br.mamba_wedding.guests.api;
 
 
+import com.br.mamba_wedding.guests.api.dto.GuestCreate;
+import com.br.mamba_wedding.guests.api.dto.GuestCreated;
 import com.br.mamba_wedding.guests.api.dto.RsvpActionRequest;
 import com.br.mamba_wedding.guests.api.dto.RsvpLookupRequest;
 import com.br.mamba_wedding.guests.api.dto.RsvpResponse;
 import com.br.mamba_wedding.guests.application.GuestRsvpService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -43,5 +48,12 @@ public class GuestRsvpController {
                 request.notes()
         );
         return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/register")
+    public ResponseEntity<GuestCreated> registerGuest(@Valid @RequestBody GuestCreate guestCreate){
+        GuestCreated response = guestRsvpService.register(guestCreate);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
