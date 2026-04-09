@@ -66,9 +66,11 @@ public class GuestRsvpService {
 
     @Transactional
     public GuestCreated register(GuestCreate guestCreate) {
+
+        String rsvpCode = rsvpCodeBuilder(guestCreate.fullName());
         Guest guest = Guest.builder()
             .fullName(guestCreate.fullName())
-            .rsvpCode(guestCreate.rsvpCode())
+            .rsvpCode(rsvpCode)
             .rsvpStatus(GuestStatus.PENDING)
             .side(guestCreate.side())
             .email(guestCreate.email())
@@ -79,5 +81,13 @@ public class GuestRsvpService {
         GuestCreated guestCreated = new GuestCreated(savedGuest);
 
         return guestCreated;
+    }
+
+    public String rsvpCodeBuilder(String name){
+
+        String initials = name.substring(0, 3).toUpperCase();
+        String random4Digit = String.valueOf((int)(Math.random() * (9999 - 1000 + 1) + 1000));
+
+        return initials + random4Digit;
     }
 }

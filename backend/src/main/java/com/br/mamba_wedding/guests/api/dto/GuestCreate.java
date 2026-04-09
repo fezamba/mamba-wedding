@@ -14,11 +14,6 @@ public record GuestCreate (
         @Size(max = 120)
         String fullName,
 
-        // TODO: Gerar automaticamente o code com base no nome do convidado
-        @NotBlank
-        @Size(min = 3, max = 32)
-        String rsvpCode,
-
         @NotNull
         GuestSide side,
 
