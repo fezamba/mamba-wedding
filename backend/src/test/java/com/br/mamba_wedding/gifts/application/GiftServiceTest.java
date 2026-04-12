@@ -143,7 +143,7 @@ class GiftServiceTest {
 
     // TODO: Escrever teste para verificar se apenas ADMINS podem criar presentes
     @Test
-    void registerAGift_OnlyAdminsAllowed(){
+    void register_ShouldThrowExceptionWhenUserDoesntHaveAdminRole(){
         
     }
 }
