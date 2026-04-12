@@ -21,6 +21,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -141,7 +143,7 @@ class GiftServiceTest {
         verify(giftTransactionRepository, times(1)).saveAll(anyList());
     }
 
-    // TODO: Escrever teste para verificar se apenas ADMINS podem criar presentes
+    // TODO: Implementar teste para garantir que o register é ADMIN only
     @Test
     void register_ShouldThrowExceptionWhenUserDoesntHaveAdminRole(){
         
