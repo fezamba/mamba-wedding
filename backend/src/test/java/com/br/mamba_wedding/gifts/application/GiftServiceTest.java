@@ -142,10 +142,4 @@ class GiftServiceTest {
         assertEquals(TransactionStatus.CANCELED, expiredTransaction.getStatus());
         verify(giftTransactionRepository, times(1)).saveAll(anyList());
     }
-
-    // TODO: Implementar teste para garantir que o register é ADMIN only
-    @Test
-    void register_ShouldThrowExceptionWhenUserDoesntHaveAdminRole(){
-        
-    }
 }
