@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -18,11 +19,9 @@ import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -39,21 +38,20 @@ import com.br.mamba_wedding.gifts.domain.Gift;
     }
 )
 
-// FIXME: teste está retornando 401
 @Import(GiftControllerTest.TestSecurityConfig.class)
 class GiftControllerTest {
 
     @TestConfiguration
     @EnableWebSecurity
-    @EnableMethodSecurity
     static class TestSecurityConfig {
 
         @Bean
         SecurityFilterChain testSecurityFilterChain(HttpSecurity http) throws Exception {
             return http
                     .csrf(csrf -> csrf.disable())
-                    .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
-                    .httpBasic(Customizer.withDefaults())
+                    .authorizeHttpRequests(auth -> auth
+                            .requestMatchers("/api/gifts/register", "/api/gifts/admin/register").hasAuthority("ROLE_ADMIN")
+                            .anyRequest().permitAll())
                     .build();
         }
     }
@@ -64,18 +62,16 @@ class GiftControllerTest {
     @MockitoBean
     private GiftService giftService;
 
-    private String validBody() {
-        return """
-            {
-              "name": "Geladeira",
-              "description": "Geladeira duas portas preta",
-              "value": 2500.00,
-              "totalQuotas": 10,
-              "imageUrl": "url-geladeira-duas-portas",
-              "purchaseLink": "url-compra-geladeira"
-            }
-            """;
-    }
+    String json = """
+                {
+                "name": "Geladeira",
+                "description": "Geladeira duas portas preta",
+                "value": 2500.00,
+                "totalQuotas": 10,
+                "imageUrl": "url-geladeira-duas-portas",
+                "purchaseLink": "url-compra-geladeira"
+                }
+                """;
 
     private Gift sampleGift() {
         return Gift.builder()
@@ -89,24 +85,24 @@ class GiftControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
     void register_ShouldAllowAdmin() throws Exception {
         when(giftService.register(any())).thenReturn(new GiftCreated(sampleGift()));
 
-        mockMvc.perform(post("/api/gifts/register")
+        mockMvc.perform(post("/api/gifts/admin/register")
+                .with(user("admin").authorities(new SimpleGrantedAuthority("ROLE_ADMIN")))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(validBody()))
+                .content(json))
                 .andExpect(status().isCreated());
 
         verify(giftService).register(any());
     }
 
     @Test
-    @WithMockUser(roles = "GUEST")
     void register_ShouldReturnForbidden_WhenUserIsGuest() throws Exception {
-        mockMvc.perform(post("/api/gifts/register")
+        mockMvc.perform(post("/api/gifts/admin/register")
+                .with(user("guest").authorities(new SimpleGrantedAuthority("ROLE_GUEST")))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(validBody()))
+                .content(json))
                 .andExpect(status().isForbidden());
 
         verify(giftService, never()).register(any());

@@ -61,14 +61,14 @@ public class GiftController {
         return ResponseEntity.noContent().build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/register")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PostMapping({"/register", "/admin/register"})
     public ResponseEntity<GiftCreated> registerGift(@Valid @RequestBody GiftCreate gift){
         GiftCreated response = giftService.register(gift);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/{id}/delete")
     public ResponseEntity<Void> deleteGift(@PathVariable Long id){
         giftService.delete(id);
