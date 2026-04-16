@@ -38,6 +38,8 @@ import com.br.mamba_wedding.gifts.domain.Gift;
         @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityFilter.class)
     }
 )
+
+// FIXME: teste está retornando 401
 @Import(GiftControllerTest.TestSecurityConfig.class)
 class GiftControllerTest {
 
