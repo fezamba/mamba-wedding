@@ -32,7 +32,7 @@ import com.br.mamba_wedding.gifts.application.GiftService;
 import com.br.mamba_wedding.gifts.domain.Gift;
 
 @WebMvcTest(
-    controllers = GiftController.class,
+    controllers = {GiftController.class, AdminGiftController.class},
     excludeFilters = {
         @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityFilter.class)
     }
@@ -50,7 +50,7 @@ class GiftControllerTest {
             return http
                     .csrf(csrf -> csrf.disable())
                     .authorizeHttpRequests(auth -> auth
-                            .requestMatchers("/api/gifts/register", "/api/gifts/admin/register").hasAuthority("ROLE_ADMIN")
+                    .requestMatchers("/api/admin/gifts/register").hasAuthority("ROLE_ADMIN")
                             .anyRequest().permitAll())
                     .build();
         }
@@ -88,7 +88,7 @@ class GiftControllerTest {
     void register_ShouldAllowAdmin() throws Exception {
         when(giftService.register(any())).thenReturn(new GiftCreated(sampleGift()));
 
-        mockMvc.perform(post("/api/gifts/admin/register")
+        mockMvc.perform(post("/api/admin/gifts/register")
                 .with(user("admin").authorities(new SimpleGrantedAuthority("ROLE_ADMIN")))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
@@ -99,7 +99,7 @@ class GiftControllerTest {
 
     @Test
     void register_ShouldReturnForbidden_WhenUserIsGuest() throws Exception {
-        mockMvc.perform(post("/api/gifts/admin/register")
+        mockMvc.perform(post("/api/admin/gifts/register")
                 .with(user("guest").authorities(new SimpleGrantedAuthority("ROLE_GUEST")))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))

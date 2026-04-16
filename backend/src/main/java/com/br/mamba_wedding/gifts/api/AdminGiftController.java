@@ -1,0 +1,40 @@
+package com.br.mamba_wedding.gifts.api;
+
+import com.br.mamba_wedding.gifts.api.dto.GiftCreate;
+import com.br.mamba_wedding.gifts.api.dto.GiftCreated;
+import com.br.mamba_wedding.gifts.application.GiftService;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/admin/gifts")
+@RequiredArgsConstructor
+public class AdminGiftController {
+
+    private final GiftService giftService;
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PostMapping("/register")
+    public ResponseEntity<GiftCreated> registerGift(@Valid @RequestBody GiftCreate gift){
+        GiftCreated response = giftService.register(gift);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<Void> deleteGift(@PathVariable Long id){
+        giftService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+}
