@@ -1,6 +1,7 @@
 package com.br.mamba_wedding.config.security;
 
 import com.br.mamba_wedding.guests.domain.Guest;
+import com.br.mamba_wedding.guests.domain.GuestNotFoundException;
 import com.br.mamba_wedding.guests.infrastructure.GuestRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -38,13 +39,24 @@ public class SecurityFilter extends OncePerRequestFilter {
                 String subject = decodedJWT.getSubject();
                 String roleString = decodedJWT.getClaim("role").asString();
                 
+                if (roleString == null || roleString.isBlank()) {
+                    filterChain.doFilter(request, response);
+                    return;
+                }
+
                 List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(roleString));
                 Object principal = null;
 
                 if ("ROLE_GUEST".equals(roleString)) {
-                    Guest guest = guestRepository.findByRsvpCode(subject)
-                            .orElseThrow(() -> new RuntimeException("Convidado não encontrado"));
-                    principal = guest;
+                    try {
+                        Guest guest = guestRepository.findByRsvpCode(subject)
+                                .orElseThrow(GuestNotFoundException::new);
+                        principal = guest;
+                    } catch (GuestNotFoundException ex) {
+                        SecurityContextHolder.clearContext();
+                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token de convidado inválido.");
+                        return;
+                    }
                     
                 } else if ("ROLE_ADMIN".equals(roleString)) {
                     principal = subject;
@@ -61,7 +73,14 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     private String recoverToken(HttpServletRequest request) {
         var authHeader = request.getHeader("Authorization");
-        if (authHeader == null) return null;
-        return authHeader.replace("Bearer ", "");
+        if (authHeader == null || authHeader.isBlank()) {
+            return null;
+        }
+
+        if (authHeader.startsWith("Bearer ")) {
+            return authHeader.substring(7);
+        }
+
+        return null;
     }
 }

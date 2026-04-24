@@ -28,6 +28,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.br.mamba_wedding.config.security.SecurityFilter;
+import com.br.mamba_wedding.config.security.PublicEndpointRateLimiter;
 import com.br.mamba_wedding.guests.api.dto.GuestCreated;
 import com.br.mamba_wedding.guests.application.GuestRsvpService;
 import com.br.mamba_wedding.guests.domain.Guest;
@@ -65,6 +66,9 @@ class GuestControllerTest {
 
     @MockitoBean
     private GuestRsvpService guestRsvpService;
+    
+    @MockitoBean
+    private PublicEndpointRateLimiter publicEndpointRateLimiter;
 
     String json =   """
                         {

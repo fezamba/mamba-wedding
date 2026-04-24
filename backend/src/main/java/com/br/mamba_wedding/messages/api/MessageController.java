@@ -1,8 +1,10 @@
 package com.br.mamba_wedding.messages.api;
 
 import com.br.mamba_wedding.guests.domain.Guest;
+import com.br.mamba_wedding.messages.api.dto.MessageRequest;
 import com.br.mamba_wedding.messages.application.MessageService;
 import com.br.mamba_wedding.messages.domain.Message;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +22,6 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    public record MessageRequest(String text) {}
-
     @GetMapping
     public ResponseEntity<List<Message>> list() {
         return ResponseEntity.ok(messageService.listMessages());
@@ -29,7 +29,7 @@ public class MessageController {
 
     @PostMapping
     public ResponseEntity<Message> create(
-            @RequestBody MessageRequest request,
+            @Valid @RequestBody MessageRequest request,
             @AuthenticationPrincipal Guest loggedGuest 
     ) {
         Message savedMessage = messageService.leaveMessage(loggedGuest.getFullName(), request.text());
