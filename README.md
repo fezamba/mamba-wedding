@@ -2,7 +2,7 @@
 
 This project is a comprehensive web application for wedding management, comprising a public-facing website for guests and an administrative dashboard for the couple.
 
-The system features RSVP confirmation via access codes, guest management, a gift registry, payment gateway integration, and a hybrid storage architecture utilizing MySQL and MongoDB.
+The system features RSVP confirmation via access codes, guest management, a gift registry, payment gateway integration, and a hybrid storage architecture utilizing PostgreSQL and MongoDB.
 
 ---
 
@@ -23,22 +23,22 @@ mamba-wedding/
 
 ### Frontend
 
-* React
-* TypeScript
-* Tailwind CSS
+- React
+- TypeScript
+- Tailwind CSS
 
 ### Backend
 
-* Java 21
-* Spring Boot 4
-* Spring Web
-* Spring Data JPA
-* Spring Data MongoDB
-* Spring Security + OAuth2 - Google
-* Spring Validation
-* Lombok
+- Java 21
+- Spring Boot 4
+- Spring Web
+- Spring Data JPA
+- Spring Data MongoDB
+- Spring Security + OAuth2 - Google
+- Spring Validation
+- Lombok
 
 ### Database
 
-* PostgreSQL
-* MongoDB
+- PostgreSQL
+- MongoDB
